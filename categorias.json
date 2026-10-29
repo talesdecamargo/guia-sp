@@ -1,0 +1,23 @@
+{
+  "generos": {
+    "teatro": "Teatro", "musical": "Musical", "infantil": "Infantil", "standup": "Stand-up",
+    "opera": "Ópera", "bale": "Balé", "danca": "Dança", "concerto": "Concerto",
+    "samba": "Samba", "choro": "Choro", "jazz": "Jazz", "mpb": "MPB", "rock": "Rock",
+    "forro": "Forró", "show": "Show", "palavra": "Palavra", "exposicao": "Exposição", "cinema": "Cinema"
+  },
+  "grupos": [
+    {"id": "teatro",   "rotulo": "Teatro",        "generos": ["teatro", "musical"]},
+    {"id": "infantil", "rotulo": "Infantil",      "generos": ["infantil"]},
+    {"id": "show",     "rotulo": "Shows",         "generos": ["show", "mpb", "jazz", "rock"]},
+    {"id": "samba",    "rotulo": "Samba & choro", "generos": ["samba", "choro"]},
+    {"id": "danca",    "rotulo": "Dança",         "generos": ["danca", "bale"]},
+    {"id": "concerto", "rotulo": "Concerto",      "generos": ["concerto", "opera"]},
+    {"id": "standup",  "rotulo": "Stand-up",      "generos": ["standup"]},
+    {"id": "forro",    "rotulo": "Forró",         "generos": ["forro"]},
+    {"id": "outros",   "rotulo": "Outros",        "generos": ["palavra", "exposicao", "cinema"]}
+  ],
+  "regras": [
+    {"genero": "samba", "palavras": ["samba", "pagode", "roda de samba"]},
+    {"genero": "choro", "palavras": ["choro", "chorinho"]}
+  ]
+}

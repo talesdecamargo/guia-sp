@@ -14,7 +14,10 @@
     {"id": "concerto", "rotulo": "Concerto",      "generos": ["concerto", "opera"]},
     {"id": "standup",  "rotulo": "Stand-up",      "generos": ["standup"]},
     {"id": "forro",    "rotulo": "Forró",         "generos": ["forro"]},
-    {"id": "outros",   "rotulo": "Outros",        "generos": ["palavra", "exposicao", "cinema"]}
+    {"id": "cinema",   "rotulo": "Cinema",        "generos": ["cinema"]},
+    {"id": "exposicao","rotulo": "Exposições",    "generos": ["exposicao"]},
+    {"id": "palavra",  "rotulo": "Palavra",       "generos": ["palavra"]},
+    {"id": "outros",   "rotulo": "Outros",        "generos": []}
   ],
   "regras": [
     {"genero": "samba", "palavras": ["samba", "pagode", "roda de samba"]},

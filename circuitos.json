@@ -1,0 +1,18 @@
+{
+ "_leia": "Circuitos editaveis: mova o id de uma sala de um lado para o outro. Cinema: rede da lista 'redes_comerciais' = comercial; o resto = arte e independente. Ids em 'comercial'/'independente' vencem a regra da rede.",
+ "cinema": {
+  "redes_comerciais": [
+   "Cinemark",
+   "Cinépolis",
+   "UCI",
+   "Kinoplex",
+   "Cinesystem",
+   "Moviecom",
+   "Cine Araújo",
+   "Cineflix",
+   "PlayArte"
+  ],
+  "comercial": [],
+  "independente": []
+ }
+}

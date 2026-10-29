@@ -1,0 +1,28 @@
+{
+ "name": "Vão · o que tem em São Paulo",
+ "short_name": "Vão",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#d6d3cc",
+ "theme_color": "#d6d3cc",
+ "lang": "pt-BR",
+ "icons": [
+  {
+   "src": "icone-180.png",
+   "sizes": "180x180",
+   "type": "image/png"
+  },
+  {
+   "src": "icone-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any maskable"
+  },
+  {
+   "src": "icone.svg",
+   "sizes": "any",
+   "type": "image/svg+xml"
+  }
+ ]
+}

@@ -1,6 +1,18 @@
 {
- "_leia": "Circuitos editaveis: mova o id de uma sala de um lado para o outro. Cinema: rede da lista 'redes_comerciais' = comercial; o resto = arte e independente. Ids em 'comercial'/'independente' vencem a regra da rede.",
+ "_leia": "Circuitos do cinema, editaveis. Arte = SO as salas da lista 'arte' (id do cinema.json ou nome exato da sala). Publico = rede da lista 'redes_publicas' (Spcine) ou sala com 'CEU' no nome. Comercial = rede da lista 'redes_comerciais'. Sala fora de tudo fica sem circuito (sem selo), nunca 'arte' por omissao. Ids/nomes em 'comercial' e 'publico' vencem a regra da rede. Para mudar uma sala de lado, mova o nome dela de uma lista para outra.",
  "cinema": {
+  "arte": [
+   "Cinema Belas Artes",
+   "Cinema Reserva Cultural São Paulo",
+   "Instituto Moreira Salles SP",
+   "Cinemateca Brasileira",
+   "Espaço Petrobras de Cinema",
+   "Cine Tutu",
+   "Cine Marquise Paulista"
+  ],
+  "redes_publicas": [
+   "Spcine"
+  ],
   "redes_comerciais": [
    "Cinemark",
    "Cinépolis",
@@ -13,6 +25,6 @@
    "PlayArte"
   ],
   "comercial": [],
-  "independente": []
+  "publico": []
  }
 }

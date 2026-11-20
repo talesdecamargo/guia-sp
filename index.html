@@ -21,7 +21,9 @@
    a tinta é preta; a retícula e o registro fora do lugar são da impressão tipográfica. Marca: o vão do MASP. */
 :root{
   --bg:#d6d3cc; --bg2:#cbc8c0; --papel:#f3f0e9; --tinta:#131312; --mudo:#5b5852; --fio:#b3afa6; --fio2:#9f9b92;
-  --lina:#d7261e; --ok:#0f7a43; --aviso:#c0281f;
+  --lina:#d7261e; --ok:#0a6334; --aviso:#a51d15;
+  /* --lina-tx: texto sobre o vermelho; --lina-t: vermelho usado como TEXTO (AA sobre papel e concreto); --ambar: fonte suspeita */
+  --lina-tx:#ffffff; --lina-t:#b01c15; --ambar:#6e4600;
   --disp:"League Gothic","Oswald","Arial Narrow",Impact,sans-serif;
   --txt:"Barlow",system-ui,sans-serif; --cond:"Barlow Condensed","Arial Narrow",sans-serif;
   --nav:64px; --topo:56px;
@@ -30,12 +32,12 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#151514; --bg2:#1b1b1a; --papel:#232321; --tinta:#eeebe4; --mudo:#a6a299; --fio:#363532; --fio2:#4a4945;
-    --lina:#ff5a4e; --ok:#4cc98a; --aviso:#ff7b70; color-scheme:dark;
+    --lina:#ff5a4e; --ok:#4cc98a; --aviso:#ff7b70; --lina-tx:#131312; --lina-t:#ff7b70; --ambar:#e0a83a; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#151514; --bg2:#1b1b1a; --papel:#232321; --tinta:#eeebe4; --mudo:#a6a299; --fio:#363532; --fio2:#4a4945;
-  --lina:#ff5a4e; --ok:#4cc98a; --aviso:#ff7b70; color-scheme:dark;
+  --lina:#ff5a4e; --ok:#4cc98a; --aviso:#ff7b70; --lina-tx:#131312; --lina-t:#ff7b70; --ambar:#e0a83a; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--topo) + 64px)}
@@ -67,7 +69,7 @@ a{color:inherit}
 .ico{width:44px;height:44px;display:grid;place-items:center;border:2px solid var(--tinta);background:var(--papel);flex:none;position:relative}
 .ico svg{width:20px;height:20px}
 .ico[aria-pressed="true"]{background:var(--tinta);color:var(--bg)}
-.ico .bolinha{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:var(--lina);color:#fff;font:700 .7rem/18px var(--txt)}
+.ico .bolinha{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:var(--lina);color:var(--lina-tx);font:700 .7rem/18px var(--txt)}
 @media (min-width:860px){ .abas-topo{display:flex} .nav{display:none!important} body{padding-bottom:0} }
 
 /* busca */
@@ -84,7 +86,7 @@ a{color:inherit}
 .nav button[aria-selected="true"]{color:var(--tinta)}
 .nav button[aria-selected="true"] .f{fill:currentColor}
 .nav button[aria-selected="true"]::before{content:"";position:absolute;top:-3px;left:22%;right:22%;height:4px;background:var(--lina)}
-.nav .n{position:absolute;top:7px;left:calc(50% + 10px);font:700 .66rem/16px var(--txt);min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--lina);color:#fff;letter-spacing:0}
+.nav .n{position:absolute;top:7px;left:calc(50% + 10px);font:700 .66rem/16px var(--txt);min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--lina);color:var(--lina-tx);letter-spacing:0}
 
 /* ---------- janelas ---------- */
 .barra{display:flex;gap:8px;align-items:stretch;margin:14px 0 0}
@@ -110,13 +112,13 @@ a{color:inherit}
   -webkit-mask-image:linear-gradient(135deg, transparent 38%, #000 100%);mask-image:linear-gradient(135deg, transparent 38%, #000 100%)}
 .lambe .nm{font:400 var(--fs,28px)/.86 var(--disp);text-transform:uppercase;letter-spacing:.005em;position:relative;z-index:1;
   text-shadow:var(--reg,0) var(--reg,0) 0 var(--sobre)}
-.lambe .nn{font:700 var(--fn,15px)/1 var(--txt);position:relative;z-index:1;align-self:flex-start;opacity:.9}
+.lambe .nn{font:700 var(--fn,15px)/1 var(--txt);position:relative;z-index:1;align-self:flex-start}
 .lambe.dobra::before{content:"";position:absolute;right:0;top:0;width:26px;height:26px;background:linear-gradient(225deg, var(--bg2) 50%, rgba(255,255,255,.55) 50%);z-index:2}
 .muro.filtrando .lambe[aria-pressed="false"]{opacity:.28;filter:grayscale(.6)}
 .lambe[aria-pressed="true"]{box-shadow:inset 0 0 0 4px var(--tinta)}
 .muro-rodape{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:500 .82rem/1.3 var(--cond);letter-spacing:.04em;color:var(--mudo);margin:6px 0 0}
 .muro-rodape .ativos{color:var(--tinta);font-weight:700}
-.muro-rodape button{border:0;background:none;padding:0;text-decoration:underline;text-underline-offset:3px;font:inherit;color:var(--tinta)}
+.muro-rodape button{border:0;background:none;padding:0;min-height:44px;text-decoration:underline;text-underline-offset:3px;font:inherit;color:var(--tinta)}
 
 /* ---------- seções e cartazes ---------- */
 .secao{margin:34px 0 0}
@@ -142,7 +144,7 @@ a{color:inherit}
 .tipo{position:absolute;inset:0;background:var(--cor);color:var(--tc);padding:38px 12px 10px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
 .tipo::after{content:"";position:absolute;inset:0;mix-blend-mode:multiply;opacity:.5;background-image:radial-gradient(circle, rgba(0,0,0,.3) 1.1px, transparent 1.5px);background-size:6px 6px;-webkit-mask-image:linear-gradient(160deg, transparent 30%, #000);mask-image:linear-gradient(160deg, transparent 30%, #000)}
 .tipo b{font:400 var(--tf,2.4rem)/.86 var(--disp);text-transform:uppercase;position:relative;z-index:1;overflow-wrap:anywhere;text-shadow:2px 2px 0 var(--sobre)}
-.tipo i{font:600 .78rem/1.1 var(--cond);font-style:normal;letter-spacing:.08em;text-transform:uppercase;margin-top:6px;position:relative;z-index:1;opacity:.85}
+.tipo i{font:600 .78rem/1.1 var(--cond);font-style:normal;letter-spacing:.08em;text-transform:uppercase;margin-top:6px;position:relative;z-index:1}
 .cartaz .corpo{padding:10px 12px 12px;display:flex;flex-direction:column;gap:3px;flex:1}
 .cartaz h3{margin:0;font:700 1.04rem/1.18 var(--txt);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .cartaz .art{font-size:.86rem;color:var(--mudo);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
@@ -156,9 +158,9 @@ a{color:inherit}
 .pill.g{background:var(--cor);color:var(--tc);border-color:var(--cor)}
 .quero{position:absolute;right:8px;top:8px;z-index:3;width:44px;height:44px;display:grid;place-items:center;background:var(--papel);border:2px solid var(--tinta);color:var(--tinta)}
 .quero svg{width:20px;height:20px}
-.quero[aria-pressed="true"]{background:var(--lina);border-color:var(--lina);color:#fff}
+.quero[aria-pressed="true"]{background:var(--lina);border-color:var(--lina);color:var(--lina-tx)}
 .quero[aria-pressed="true"] path{fill:currentColor}
-.mais{display:block;margin:20px auto 0;border:2px solid var(--tinta);background:var(--papel);padding:12px 22px;font:700 .82rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase}
+.mais{display:block;min-height:44px;margin:20px auto 0;border:2px solid var(--tinta);background:var(--papel);padding:12px 22px;font:700 .82rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase}
 .vazio{padding:46px 8px;text-align:center;color:var(--mudo)}
 .vazio b{display:block;color:var(--tinta);font:400 2rem/1 var(--disp);text-transform:uppercase;margin-bottom:8px}
 .heroi{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:24px 0 10px}
@@ -172,7 +174,10 @@ a{color:inherit}
 .destaque .capa{aspect-ratio:16/11;border-bottom:0}
 .destaque .capa .etq{display:none}
 .destaque .txt{padding:14px 14px 16px;display:flex;flex-direction:column;gap:6px}
-.destaque .kick{font:700 .74rem/1 var(--cond);letter-spacing:.16em;text-transform:uppercase;color:var(--cor)}
+.destaque .kick{font:700 .74rem/1 var(--cond);letter-spacing:.16em;text-transform:uppercase;color:var(--kc,#eeebe4)}
+.destaque .pill{border-color:currentColor}
+.destaque .pill.tbc{color:#b5b1a8;border-color:#7a766e}
+.destaque .pill.gratis{color:#4cc98a;border-color:#4cc98a}
 .destaque h2{margin:0;font:400 clamp(2.4rem,9vw,4.4rem)/.86 var(--disp);text-transform:uppercase;overflow-wrap:anywhere}
 .destaque .onde{font-size:.92rem;opacity:.85}
 .destaque .quando{font:600 .9rem/1.2 var(--cond);letter-spacing:.04em}
@@ -198,14 +203,14 @@ a{color:inherit}
 .dia{margin-top:18px}
 .dia-cab{display:flex;align-items:center;gap:10px;margin:0 0 4px;padding:10px 0 6px;border-bottom:3px solid var(--tinta)}
 .dia-cab h2{margin:0;font:400 2.3rem/.9 var(--disp);text-transform:uppercase}
-.dia-cab .rel{background:var(--lina);color:#fff;font:700 .72rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase;padding:4px 6px 3px}
+.dia-cab .rel{background:var(--lina);color:var(--lina-tx);font:700 .72rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase;padding:4px 6px 3px}
 .dia-cab .q{margin-left:auto;font:600 .85rem/1 var(--cond);color:var(--mudo);letter-spacing:.05em}
 .periodo{font:700 .72rem/1 var(--cond);letter-spacing:.16em;text-transform:uppercase;color:var(--mudo);margin:16px 0 2px}
 .linhas{list-style:none;margin:0;padding:0}
 .linha{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--fio);align-items:start}
 .linha .hora{font:400 1.75rem/1 var(--disp);border-left:6px solid var(--cor);padding-left:8px;min-height:40px}
 .linha .hora.tbc{font:600 .74rem/1.15 var(--cond);letter-spacing:.03em;color:var(--mudo);text-transform:uppercase}
-.linha .hora small{display:block;font:600 .64rem/1.1 var(--cond);letter-spacing:.06em;text-transform:uppercase;color:var(--lina);margin-top:3px}
+.linha .hora small{display:block;font:600 .64rem/1.1 var(--cond);letter-spacing:.06em;text-transform:uppercase;color:var(--lina-t);margin-top:3px}
 .linha .abrir{border:0;background:none;padding:0;text-align:left;min-width:0}
 .linha h3{margin:0;font:700 1.02rem/1.2 var(--txt);overflow-wrap:anywhere}
 .linha .onde{font-size:.84rem;color:var(--mudo);margin-top:2px}
@@ -214,11 +219,11 @@ a{color:inherit}
 .mais-ag{width:44px;height:44px;border:2px solid var(--tinta);background:var(--papel);display:grid;place-items:center;margin-left:auto}
 .mais-ag svg{width:18px;height:18px}
 .mais-ag[aria-pressed="true"]{background:var(--tinta);color:var(--bg)}
-.comprar{display:inline-block;text-align:center;background:var(--lina);color:#fff;text-decoration:none;font:700 .74rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase;padding:8px 8px 7px;white-space:nowrap}
+.comprar{display:inline-flex;align-items:center;justify-content:center;min-height:44px;text-align:center;background:var(--lina);color:var(--lina-tx);text-decoration:none;font:700 .74rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase;padding:0 10px;white-space:nowrap}
 .conflito{grid-column:2/-1;font:600 .82rem/1.25 var(--txt);color:var(--aviso);display:flex;gap:6px;align-items:flex-start}
 .conflito svg{flex:none;width:16px;height:16px;margin-top:1px}
 details.diatodo{margin:14px 0 0;border:2px solid var(--tinta);background:var(--papel)}
-details.diatodo summary{cursor:pointer;padding:10px 12px;font:700 .8rem/1.1 var(--cond);letter-spacing:.1em;text-transform:uppercase;list-style:none;display:flex;gap:8px;align-items:center}
+details.diatodo summary{cursor:pointer;min-height:44px;padding:10px 12px;font:700 .8rem/1.1 var(--cond);letter-spacing:.1em;text-transform:uppercase;list-style:none;display:flex;gap:8px;align-items:center}
 details.diatodo summary::-webkit-details-marker{display:none}
 details.diatodo summary::after{content:"+";margin-left:auto;font:400 1.4rem/1 var(--disp)}
 details.diatodo[open] summary::after{content:"–"}
@@ -242,20 +247,20 @@ details.diatodo .linhas{padding:0 12px}
 .poster .tipo{padding:12px 10px}
 .filme h3{margin:6px 0 0;font:700 .96rem/1.15 var(--txt);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .filme .meta .arte{font:700 .62rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase;border:1.5px solid var(--tinta);padding:3px 4px 2px;color:var(--tinta)}
-.mapa{font:700 .72rem/1 var(--cond);letter-spacing:.08em;text-transform:uppercase;color:var(--lina);display:inline-block;padding:6px 0}
+.mapa{font:700 .72rem/1 var(--cond);letter-spacing:.08em;text-transform:uppercase;color:var(--lina-t);display:inline-flex;align-items:center;min-height:44px;padding:0 2px}
 .sala-abre{border:0;background:none;padding:0;text-align:left;min-width:0;width:100%}
 .sala-abre .resumo{font:600 .82rem/1.3 var(--cond);letter-spacing:.03em;margin-top:2px}
-.sala-abre .resumo u{color:var(--lina);text-underline-offset:3px}
+.sala-abre .resumo u{color:var(--lina-t);text-underline-offset:3px}
 .filme .meta{display:flex;gap:6px;align-items:center;font:600 .76rem/1 var(--cond);letter-spacing:.04em;color:var(--mudo)}
 .filme .quando{font:600 .8rem/1.2 var(--cond);letter-spacing:.03em}
 .ci{display:inline-grid;place-items:center;min-width:22px;height:20px;padding:0 3px;font:700 .72rem/1 var(--txt);color:#fff;background:#555}
-.ci.L{background:#0a8f3c}.ci.c10{background:#1c6fd1}.ci.c12{background:#e8b100;color:#131312}.ci.c14{background:#e46b12}.ci.c16{background:#d01f1f}.ci.c18{background:#131312;box-shadow:inset 0 0 0 1px #777}
+.ci.L{background:#08722f}.ci.c10{background:#1c6fd1}.ci.c12{background:#e8b100;color:#131312}.ci.c14{background:#e46b12;color:#131312}.ci.c16{background:#d01f1f}.ci.c18{background:#131312;box-shadow:inset 0 0 0 1px #777}
 .salas{margin-top:12px}
 .sala{background:var(--papel);border:2px solid var(--tinta);padding:12px;margin-bottom:12px}
 .sala h3{margin:0;font:400 1.7rem/.95 var(--disp);text-transform:uppercase}
 .sala .end{font-size:.82rem;color:var(--mudo);margin:4px 0 8px}
 .sala .fl{display:grid;grid-template-columns:44px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--fio);align-items:start}
-.sala .fl button{border:0;background:none;padding:0;text-align:left}
+.sala .fl button{border:0;background:none;padding:0;text-align:left;min-height:44px}
 .sala .fl .mini-p{display:block;width:44px;aspect-ratio:2/3;background:var(--cc,#444);overflow:hidden;border:1.5px solid var(--tinta)}
 .sala .fl .mini-p img{width:100%;height:100%;object-fit:cover;display:block}
 .sala .fl b{display:block;font:700 .92rem/1.2 var(--txt)}
@@ -264,7 +269,7 @@ details.diatodo .linhas{padding:0 12px}
 .hr i{font:700 .6rem/1 var(--cond);font-style:normal;letter-spacing:.06em;color:var(--mudo);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
 a.hr:hover{background:var(--tinta);color:var(--bg)}
 a.hr:hover i{color:inherit}
-span.hr{opacity:.6}
+span.hr{border-style:dashed;color:var(--mudo)}
 .fcab-filme{display:grid;grid-template-columns:118px minmax(0,1fr);gap:14px;padding:16px 64px 0 16px}
 .fcab-filme h2{margin:0;font:400 2.2rem/.9 var(--disp);text-transform:uppercase;overflow-wrap:anywhere}
 .fcab-filme .orig{font-size:.84rem;color:var(--mudo);margin-top:4px;font-style:italic}
@@ -316,7 +321,7 @@ span.hr{opacity:.6}
 /* filtros dentro da faixa de dias (Programação) e linha de filtros ativos */
 .dias button.fil{display:grid;place-items:center;min-width:52px;padding:0 10px}
 .dias button.fil svg{width:22px;height:22px}
-.dias button.fil .bolinha{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:var(--lina);color:#fff;font:700 .7rem/18px var(--txt)}
+.dias button.fil .bolinha{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:var(--lina);color:var(--lina-tx);font:700 .7rem/18px var(--txt)}
 .ativos-linha{margin:10px 0 0}
 /* exposições: período e dados do lugar na folha */
 .folha .per{font:600 .98rem/1.25 var(--cond);letter-spacing:.03em;margin-top:8px}
@@ -325,14 +330,26 @@ span.hr{opacity:.6}
 .palco .lug{font-size:.84rem;margin:-4px 0 8px}
 .palco .lug span{display:block}
 
+/* desempenho (Android medio): secoes fora da tela nao sao desenhadas ate chegar perto */
+.secao,.dia,.palco,.sala{content-visibility:auto;contain-intrinsic-size:auto 420px}
+.aviso-ag{display:flex;gap:8px;align-items:flex-start;margin:14px 0 0;padding:10px 12px;border:2px solid var(--aviso);background:var(--papel);font:600 .86rem/1.3 var(--txt);color:var(--tinta)}
+.aviso-ag svg{flex:none;width:18px;height:18px;color:var(--aviso);margin-top:1px}
+.aviso-ag button{margin-left:auto;flex:none;min-height:44px;border:2px solid var(--tinta);background:none;padding:0 10px;font:700 .72rem/1 var(--cond);letter-spacing:.08em;text-transform:uppercase}
+.folha .temporada{font:600 .9rem/1.25 var(--cond);letter-spacing:.03em;margin-top:8px}
+
 /* ---------- rodapé ---------- */
 .rodape{margin:44px 0 16px;padding-top:12px;border-top:3px solid var(--tinta);font:500 .82rem/1.4 var(--cond);letter-spacing:.03em;color:var(--mudo)}
-.rodape button{border:0;background:none;padding:0;color:inherit;text-decoration:underline;text-underline-offset:3px;font:inherit}
+.rodape button{border:0;background:none;padding:0 2px;min-height:44px;color:inherit;text-decoration:underline;text-underline-offset:3px;font:inherit}
+.rodape .aviso-fonte{color:var(--tinta)}
+.saude .grupo{padding:8px 0 2px;font-weight:700;color:var(--tinta);letter-spacing:.06em;text-transform:uppercase}
+.saude .susp{color:var(--ambar);font-weight:700}
+.saude .longe{opacity:.85}
 .saude{list-style:none;padding:0;margin:8px 0 0;display:none}
 .saude.on{display:block}
 .saude li{padding:3px 0}
 .ponto{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:var(--ok)}
 .ponto.mal{background:var(--aviso)}
+.ponto.susp{background:var(--ambar)}
 
 /* ---------- folhas (detalhe e filtros) ---------- */
 dialog{border:0;padding:0;background:var(--papel);color:var(--tinta);max-height:100dvh}
@@ -355,15 +372,15 @@ dialog::backdrop{background:rgba(12,12,11,.6)}
 .folha .local b{display:block;font:700 1rem/1.2 var(--txt)}
 .folha .local span{font-size:.86rem;color:var(--mudo)}
 .acoes{display:flex;gap:8px;flex-wrap:wrap;padding:14px 16px 0}
-.btn{border:2px solid var(--tinta);background:none;padding:10px 14px 9px;font:700 .78rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:7px;color:var(--tinta)}
+.btn{border:2px solid var(--tinta);background:none;min-height:44px;padding:10px 14px 9px;font:700 .78rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:7px;color:var(--tinta)}
 .btn svg{width:16px;height:16px}
-.btn[aria-pressed="true"]{background:var(--lina);border-color:var(--lina);color:#fff}
+.btn[aria-pressed="true"]{background:var(--lina);border-color:var(--lina);color:var(--lina-tx)}
 .btn[aria-pressed="true"] path{fill:currentColor}
 .folha .meta.pills{padding:14px 16px 0}
 .folha .sobre{padding:0 16px}
 .folha .sobre p{margin:12px 0 0;line-height:1.5}
 .folha .sobre p.corta{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
-.folha .lermais{border:0;background:none;padding:6px 0 0;font:700 .78rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase;color:var(--lina);text-decoration:underline;text-underline-offset:3px}
+.folha .lermais{border:0;background:none;min-height:44px;padding:6px 0 0;font:700 .78rem/1 var(--cond);letter-spacing:.1em;text-transform:uppercase;color:var(--lina-t);text-decoration:underline;text-underline-offset:3px}
 .folha h3{display:flex;justify-content:space-between;align-items:baseline;margin:22px 16px 0;padding-bottom:5px;border-bottom:3px solid var(--tinta);font:400 1.7rem/1 var(--disp);text-transform:uppercase}
 .folha h3 small{font:600 .78rem/1 var(--cond);letter-spacing:.06em;color:var(--mudo);text-transform:none}
 .sess{list-style:none;margin:0;padding:0 16px 24px}
@@ -372,9 +389,9 @@ dialog::backdrop{background:rgba(12,12,11,.6)}
 .sess .q b{display:block;font:400 1.6rem/1 var(--disp);color:var(--tinta);letter-spacing:.01em;margin-top:2px}
 .sess .q em{font-style:normal}
 .sess .lado{display:flex;gap:6px;align-items:center}
-.sess .ag{border:2px solid var(--tinta);background:none;padding:8px 10px 7px;font:700 .72rem/1 var(--cond);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.sess .ag{border:2px solid var(--tinta);background:none;min-height:44px;padding:8px 10px 7px;font:700 .72rem/1 var(--cond);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
 .sess .ag[aria-pressed="true"]{background:var(--tinta);color:var(--bg)}
-.sess .pag{font:700 .72rem/1 var(--cond);letter-spacing:.08em;text-transform:uppercase}
+.sess .pag{display:inline-flex;align-items:center;min-height:44px;font:700 .72rem/1 var(--cond);letter-spacing:.08em;text-transform:uppercase}
 .sess .conf{grid-column:1/-1;font-size:.82rem;font-weight:600;color:var(--aviso)}
 
 #filtros{width:min(420px,100%);height:100dvh;margin:0 0 0 auto;border-left:3px solid var(--tinta)}
@@ -412,12 +429,12 @@ dialog::backdrop{background:rgba(12,12,11,.6)}
     </a>
     <span class="esp"></span>
     <nav class="abas-topo" role="tablist" aria-label="Seções">
-      <button role="tab" data-vista="cartaz" aria-selected="true">Em cartaz</button>
-      <button role="tab" data-vista="prog" aria-selected="false">Programação</button>
-      <button role="tab" data-vista="cinema" aria-selected="false">Cinema</button>
-      <button role="tab" data-vista="arte" aria-selected="false">Exposições</button>
-      <button role="tab" data-vista="palcos" aria-selected="false">Lugares</button>
-      <button role="tab" data-vista="voce" aria-selected="false">Salvos</button>
+      <button role="tab" id="aba-t-cartaz" aria-controls="painel" data-vista="cartaz" aria-selected="true">Em cartaz</button>
+      <button role="tab" id="aba-t-prog" aria-controls="painel" data-vista="prog" aria-selected="false">Programação</button>
+      <button role="tab" id="aba-t-cinema" aria-controls="painel" data-vista="cinema" aria-selected="false">Cinema</button>
+      <button role="tab" id="aba-t-arte" aria-controls="painel" data-vista="arte" aria-selected="false">Exposições</button>
+      <button role="tab" id="aba-t-palcos" aria-controls="painel" data-vista="palcos" aria-selected="false">Lugares</button>
+      <button role="tab" id="aba-t-voce" aria-controls="painel" data-vista="voce" aria-selected="false">Salvos</button>
     </nav>
     <button class="ico" id="b-voce" type="button" aria-label="Salvos: agenda e quero ver" aria-pressed="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.7-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.3 12 20 12 20z"/></svg>
@@ -461,19 +478,19 @@ dialog::backdrop{background:rgba(12,12,11,.6)}
       <label>Até<input type="date" id="ate"></label>
     </div>
   </div>
-  <main id="painel" aria-live="polite"></main>
+  <main id="painel" role="tabpanel" aria-labelledby="aba-t-cartaz" aria-live="polite"></main>
   <footer class="rodape">
-    <span id="r-data">–</span> · <button type="button" id="r-fontes" aria-expanded="false" aria-controls="saude">fontes</button>
+    <span id="r-data">–</span> · <button type="button" id="r-fontes" aria-expanded="false" aria-controls="saude">fontes</button> · <span class="aviso-fonte" id="r-sesc">Sesc fora desde 16/11: o site bloqueou a coleta</span>
     <ul class="saude" id="saude"></ul>
   </footer>
 </div>
 
 <nav class="nav" role="tablist" aria-label="Seções">
-  <button role="tab" data-vista="cartaz" aria-selected="true"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect class="f" x="2" y="2" width="9" height="14"/><rect x="15" y="2" width="9" height="14"/></svg>Em cartaz</button>
-  <button role="tab" data-vista="prog" aria-selected="false"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect class="f" x="2" y="2" width="5" height="4"/><path d="M10 4h14M10 10h14M10 16h9"/><rect x="2" y="8" width="5" height="4"/></svg>Programação</button>
-  <button role="tab" data-vista="cinema" aria-selected="false"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect class="f" x="7" y="3" width="12" height="12"/><path d="M2 3h22v12H2zM7 3v12M19 3v12M2 7h5M2 11h5M19 7h5M19 11h5"/></svg>Cinema</button>
-  <button role="tab" data-vista="arte" aria-selected="false"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="1.5" width="16" height="15"/><rect class="f" x="9" y="5.5" width="8" height="7"/></svg>Exposições</button>
-  <button role="tab" data-vista="palcos" aria-selected="false"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path class="f" d="M3 17V7h20v10"/><path d="M1 4h24M6 17V10M20 17V10"/></svg>Lugares</button>
+  <button role="tab" id="aba-n-cartaz" aria-controls="painel" data-vista="cartaz" aria-selected="true"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect class="f" x="2" y="2" width="9" height="14"/><rect x="15" y="2" width="9" height="14"/></svg>Em cartaz</button>
+  <button role="tab" id="aba-n-prog" aria-controls="painel" data-vista="prog" aria-selected="false"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect class="f" x="2" y="2" width="5" height="4"/><path d="M10 4h14M10 10h14M10 16h9"/><rect x="2" y="8" width="5" height="4"/></svg>Programação</button>
+  <button role="tab" id="aba-n-cinema" aria-controls="painel" data-vista="cinema" aria-selected="false"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect class="f" x="7" y="3" width="12" height="12"/><path d="M2 3h22v12H2zM7 3v12M19 3v12M2 7h5M2 11h5M19 7h5M19 11h5"/></svg>Cinema</button>
+  <button role="tab" id="aba-n-arte" aria-controls="painel" data-vista="arte" aria-selected="false"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="1.5" width="16" height="15"/><rect class="f" x="9" y="5.5" width="8" height="7"/></svg>Exposições</button>
+  <button role="tab" id="aba-n-palcos" aria-controls="painel" data-vista="palcos" aria-selected="false"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path class="f" d="M3 17V7h20v10"/><path d="M1 4h24M6 17V10M20 17V10"/></svg>Lugares</button>
 </nav>
 
 <dialog id="det" aria-labelledby="det-tit"></dialog>
@@ -507,7 +524,8 @@ dialog::backdrop{background:rgba(12,12,11,.6)}
 var TZ = "America/Sao_Paulo";
 var CHAVE = "vao.guia.v1";
 /* papel de lambe-lambe por grupo (claro = papel; o escuro usa o mesmo papel: cartaz não muda de cor à noite) */
-var PAPEL = {teatro:"#d7261e", show:"#e2207a", samba:"#118a4b", infantil:"#f5c100", danca:"#f26a1b",
+/* show e samba um tom mais fundos que o papel original: com qualquer tinta, AA (M8) */
+var PAPEL = {teatro:"#d7261e", show:"#d61a70", samba:"#0e7a42", infantil:"#f5c100", danca:"#f26a1b",
   concerto:"#2445b8", standup:"#6b3fa0", forro:"#00a2b1", cinema:"#5fb4df", exposicao:"#bda372", palavra:"#a9c23b", outros:"#8f8a80"};
 /* tinta deslocada (registro fora do lugar) por grupo */
 var SOBRE = {teatro:"#f5c100", show:"#131312", samba:"#f5c100", infantil:"#e2207a", danca:"#2445b8",
@@ -561,6 +579,9 @@ function zonaPorCoord(lat, lon){
   return (ang>-55 && ang<55) ? "Leste" : "Oeste";
 }
 function zonaDe(bairro, lat, lon){ return ZONA_DE[norm(bairro)] || zonaPorCoord(lat, lon) || ""; }
+/* M2: "zona" gravada pelo zonear.py (poligono oficial) vence; bairro/angulo so quando o dado nao tem */
+function zonaLugar(o){ if (o && typeof o.zona==="string" && ZONAS.indexOf(o.zona)>=0) return o.zona; return o ? zonaDe(o.bairro, o.lat, o.lon) : ""; }
+function ddmm(d){ var a=d.split("-"); return a[2]+"/"+a[1]; }
 function urlSegura(u){ if (typeof u!=="string") return null; try { var p=new URL(u.trim()); return (p.protocol==="http:"||p.protocol==="https:")?p.href:null; } catch(e){ return null; } }
 var DURACAO_MIN = 120; /* sem horário de fim no contrato: sessão de hoje some ~2 h depois do início */
 function encerrada(s){
@@ -585,7 +606,7 @@ $("#tema").addEventListener("click", function(){
 
 /* ---------- dados ---------- */
 var CAT, G, HOJE, AGORA, CAPAS = {}, ZONA_DE = {}, ZONAS = [], CIRC = null;
-var EV = [], RAW = [], SESS_ID = {}, GRUPO_DE_GEN = {}, GRUPOS = [], COR = {}, ASSINATURA = "";
+var EV = [], RAW = [], SESS_ID = {}, GRUPO_DE_GEN = {}, GRUPOS = [], COR = {}, ASSINATURA = "", USO_IMG = {};
 var F = {janela: local.janela||"semana", de:null, ate:null, grupos:new Set(), palco:"", bairro:"", gratis:false, q:"",
   circ:new Set(), zona:new Set(), per:new Set(), precoMax:0};
 var VISTA = "cartaz", LIMITE = 48, DIA_PROG = null, ZONA = "", SEG = "agenda", LIM_PROG = 160;
@@ -597,13 +618,13 @@ function primeiro(urls){
       buscaJSON(u).then(function(j){ ok({j:j,url:u}); }, prox); })();
   });
 }
-var PARAM = null, PARAM_CIN = null, PARAM_TEA = null, PARAM_ARTE = null;
-try{ var U=new URLSearchParams(location.search); PARAM=U.get("dados"); PARAM_CIN=U.get("cinema"); PARAM_TEA=U.get("teatro"); PARAM_ARTE=U.get("arte"); }catch(e){}
+var PARAM = null, PARAM_CIN = null, PARAM_TEA = null, PARAM_ARTE = null, PARAM_CAP = null;
+try{ var U=new URLSearchParams(location.search); PARAM=U.get("dados"); PARAM_CIN=U.get("cinema"); PARAM_TEA=U.get("teatro"); PARAM_ARTE=U.get("arte"); PARAM_CAP=U.get("cartazes"); }catch(e){}
 function arqOk(p){ return !!p && /^[\w.-]+\.json$/.test(p); }
 Promise.all([
   buscaJSON("categorias.json").catch(function(){ return CAT_PADRAO; }),
   primeiro(arqOk(PARAM) ? ["dados/"+PARAM] : ["dados/guia.json","dados/guia-exemplo.json","dados/guia-mock.json"]),
-  PARAM ? Promise.resolve({}) : buscaJSON("dados/cartazes.json").catch(function(){ return {}; }),
+  PARAM ? (arqOk(PARAM_CAP) ? buscaJSON("dados/"+PARAM_CAP).catch(function(){ return {}; }) : Promise.resolve({})) : buscaJSON("dados/cartazes.json").catch(function(){ return {}; }),
   buscaJSON("circuitos.json").catch(function(){ return null; }),
   /* teatros (coletor_teatro.py): opcional; com ?dados= de teste só entra se pedido por ?teatro= */
   arqOk(PARAM_TEA) ? buscaJSON("dados/"+PARAM_TEA).catch(function(){ return null; }) : (PARAM ? Promise.resolve(null) : buscaJSON("dados/teatro.json").catch(function(){ return null; }))
@@ -611,7 +632,8 @@ Promise.all([
   .catch(function(e){ $("#painel").innerHTML='<div class="vazio"><b>Sem dados</b>Não achei dados/guia.json nem o exemplo. Rode o coletor.</div>'; console.warn(e); });
 
 function lum(hex){ var n=parseInt(hex.slice(1),16), c=[n>>16&255,n>>8&255,n&255].map(function(v){ v/=255; return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4); }); return .2126*c[0]+.7152*c[1]+.0722*c[2]; }
-function corTinta(hex){ return lum(hex)>.2?"#131312":"#ffffff"; }
+function contraste(a, b){ var x=lum(a)+.05, y=lum(b)+.05; return x>y ? x/y : y/x; }
+function corTinta(hex){ return contraste(hex,"#ffffff") >= contraste(hex,"#131312") ? "#ffffff" : "#131312"; }
 function attrCor(gid){ var c=COR[gid]||PAPEL.outros; return 'style="--cor:'+c+';--tc:'+corTinta(c)+';--sobre:'+(SOBRE[gid]||"rgba(0,0,0,.25)")+'"'; }
 
 /* teatro.json entra no mesmo guia: palcos, eventos e sessões novos; id repetido fica com o guia */
@@ -624,17 +646,19 @@ function fundir(g, t){
   Object.keys(t.eventos).forEach(function(k){ if (!g.eventos[k]){ g.eventos[k]=t.eventos[k]; novos[k]=1; } });
   g.sessoes.forEach(function(s){ if (s && s.id) vistas[s.id]=1; });
   (t.sessoes||[]).forEach(function(s){ if (s && novos[s.evento_id] && !vistas[s.id]){ vistas[s.id]=1; g.sessoes.push(s); } });
-  Object.keys(t.fontes||{}).forEach(function(k){ if (!g.fontes[k]) g.fontes[k]=t.fontes[k]; });
+  g.__fontesTea = t.fontes || {};
 }
-/* circuito do palco: o do coletor de teatro; senão Sesc, prefeitura e estado = público; senão desconhecido */
+/* circuito do palco: o do dado (comercial, independente, publico, institucional); senão prefeitura e estado = público;
+   senão null = sem selo (nunca "independente" por omissão) */
 var CIRC_PUBLICO = {"ccsp":1, "theatro-municipal":1, "praca-das-artes":1, "mosteiro-sao-bento":1};
 function circuitoPalco(p){
-  if (p.circuito==="comercial"||p.circuito==="independente"||p.circuito==="publico") return p.circuito;
+  if (p.circuito==="comercial"||p.circuito==="independente"||p.circuito==="publico"||p.circuito==="institucional") return p.circuito;
   var gs=String(p.gestao||"").toLowerCase();
   if (gs==="sesc"||gs==="municipal"||gs==="prefeitura"||gs==="estado"||gs==="estadual"||CIRC_PUBLICO[p.id]) return "publico";
   return null;
 }
-var CIRC_ROT = {comercial:"Comercial", independente:"Independente", publico:"Público"};
+var CIRC_ROT = {comercial:"Comercial", independente:"Independente", publico:"Público", institucional:"Institucional"};
+var CIRC_ORDEM = ["comercial","independente","publico","institucional"];
 
 function montar(){
   AGORA = agoraSP(); HOJE = AGORA.slice(0,10);
@@ -655,12 +679,14 @@ function montar(){
     ss.sort(cmpSess);
     var p=(G.palcos||{})[e.palco_id]||{id:e.palco_id,nome:e.palco_id||"Palco não informado",bairro:""};
     if (!p.id) p.id=e.palco_id;
-    p._zona = zonaDe(p.bairro, p.lat, p.lon); p._circ = circuitoPalco(p);
+    p._zona = zonaLugar(p); p._circ = circuitoPalco(p);
     e._palco=p; e._grupo=GRUPO_DE_GEN[e.genero]||fallback; e._raw=ss;
     e._capa = (typeof e.imagem==="string" && CAPAS[e.imagem]) || null;
     e._busca=norm([e.titulo,e.artista,p.nome,p.bairro,genRot(e.genero)].join(" "));
     RAW.push(e);
   });
+  /* G6: imagem usada por 2+ eventos (arte genérica de agenda) não serve de destaque */
+  Object.keys(G.eventos).forEach(function(id){ var e=G.eventos[id]; if (typeof e.imagem==="string" && e.imagem){ USO_IMG[e.imagem]=(USO_IMG[e.imagem]||0)+1; var c=CAPAS[e.imagem]; if (c&&c.f) USO_IMG["f:"+c.f]=(USO_IMG["f:"+c.f]||0)+1; } });
   ASSINATURA = recalcular();
   var palcos={}, bairros={};
   RAW.forEach(function(e){ palcos[e.palco_id]=e._palco.nome; if(e._palco.bairro) bairros[e._palco.bairro]=1; });
@@ -670,6 +696,11 @@ function montar(){
   if (!F.de){ F.de=HOJE; F.ate=somaDias(HOJE,6); }
   $("#de").value=F.de; $("#ate").value=F.ate; $("#de").min=HOJE; $("#ate").min=HOJE;
   rodape(); ligar(); contarAbas(); render();
+  /* muro e rodapé contam exposições e cinema: busca os dois arquivos depois da primeira pintura (com ?dados= de teste, só se pedidos) */
+  var adianta=function(){ if (!PARAM || arqOk(PARAM_ARTE)) carregarArte(); if (!PARAM || arqOk(PARAM_CIN)) carregarCinema(); };
+  if (window.requestIdleCallback) requestIdleCallback(adianta, {timeout:1500}); else setTimeout(adianta, 400);
+  /* o encaixe dos nomes no muro mede o texto: refaz quando a League Gothic chega (antes, mediu a fonte reserva, mais larga) */
+  try{ if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if (VISTA==="cartaz") pintarMuro(); }); }catch(e){}
   setInterval(atualizar, 5*60*1000);
   document.addEventListener("visibilitychange", function(){ if (document.visibilityState==="visible") atualizar(); });
   window.addEventListener("pageshow", atualizar);
@@ -713,7 +744,13 @@ function intervalo(j){
 function periodoDe(s){ if (!horaConhecida(s)) return ""; var h=+s.inicio.slice(11,13); return h<12?"manha":h<18?"tarde":"noite"; }
 var PER_ROT = {manha:"Manhã", tarde:"Tarde", noite:"Noite"};
 function naPeriodo(s, sem){ return (sem&&sem.per) || !F.per.size || F.per.has(periodoDe(s)); }
-function sessNaJanela(e, j, sem){ var r=intervalo(j); return e._ss.filter(function(s){ var d=s.inicio.slice(0,10); return d>=r[0]&&d<=r[1]&&naPeriodo(s, sem); }); }
+/* M3: recorte de datas da vista ativa (a gaveta conta no mesmo recorte que a tela mostra) */
+function faixaVista(){
+  if (VISTA==="prog") return DIA_PROG ? [DIA_PROG,DIA_PROG] : [HOJE, somaDias(HOJE,29)];
+  if (VISTA==="cartaz") return intervalo(F.janela);
+  return [HOJE,"9999-12-31"];
+}
+function sessNaJanela(e, j, sem){ var r=Array.isArray(j)?j:intervalo(j); return e._ss.filter(function(s){ var d=s.inicio.slice(0,10); return d>=r[0]&&d<=r[1]&&naPeriodo(s, sem); }); }
 /* preço: grátis = gratuito true; "até R$ N" = grátis ou preço mínimo conhecido (gratuito false) <= N; valor desconhecido não entra */
 function cabeNoPreco(e, max){ return e.gratuito===true || (e.gratuito===false && e.preco_min!=null && +e.preco_min<=max); }
 function passa(e, sem){
@@ -773,12 +810,19 @@ function capa(e, tam){
   var t=e.titulo||"", n=t.length, tf = tam==="mini" ? (n>40?"1.15rem":n>22?"1.45rem":"1.8rem") : (n>60?"1.6rem":n>34?"2rem":n>18?"2.5rem":"3rem");
   return '<span class="capa">'+lbl+'<span class="tipo" style="--tf:'+tf+'"><b>'+esc(t)+'</b><i>'+esc(e._palco.nome)+'</i></span></span>';
 }
+/* M1: a fonte só publicou parte das datas, mas diz até quando vai a temporada */
+function temporadaTxt(e){
+  var t=e.temporada_ate; if (typeof t!=="string" || !/^\d{4}-\d{2}-\d{2}$/.test(t) || t<HOJE) return "";
+  var ult=e._ss&&e._ss.length ? e._ss[e._ss.length-1].inicio.slice(0,10) : "";
+  return t>ult ? "em cartaz até "+ddmm(t) : "";
+}
 function quandoTxt(e, ss){
   ss = ss || e._ss;
-  var a=ss[0], b=ss[ss.length-1], da=a.inicio.slice(0,10), db=b.inicio.slice(0,10);
-  if (ss.length===1) return rotDia(da)+" · "+horaS(a);
-  if (da===db) return rotDia(da)+" · "+ss.length+" sessões";
-  return dm(da)+" a "+dm(db)+" · "+ss.length+" sessões";
+  var a=ss[0], b=ss[ss.length-1], da=a.inicio.slice(0,10), db=b.inicio.slice(0,10), t=temporadaTxt(e), r;
+  if (ss.length===1) r=rotDia(da)+" · "+horaS(a);
+  else if (da===db) r=rotDia(da)+" · "+ss.length+" sessões";
+  else r=dm(da)+" a "+dm(db)+" · "+ss.length+" sessões";
+  return t ? r+" · "+t : r;
 }
 function cartaz(e, ss){
   return '<article class="cartaz" '+attrCor(e._grupo)+'>'+
@@ -795,6 +839,7 @@ function cartaz(e, ss){
 /* ---------- render ---------- */
 function render(){
   $$("[data-vista]").forEach(function(b){ b.setAttribute("aria-selected", String(b.dataset.vista===VISTA)); });
+  $("#painel").setAttribute("aria-labelledby", "aba-t-"+VISTA);
   $("#c-janelas").hidden = VISTA!=="cartaz";
   $("#b-voce").setAttribute("aria-pressed", String(VISTA==="voce"));
   var nf=nFiltros(), bol=$("#n-filtros"); bol.hidden=!nf; bol.textContent=nf;
@@ -830,13 +875,17 @@ function renderCartaz(){
     html += '</div>';
     if (lista.length>LIMITE) html+='<button type="button" class="mais" id="mais">Mostrar mais '+(lista.length-LIMITE)+'</button>';
   } else {
-    html += editorial(lista);
+    /* G6: o que já apareceu no destaque ou numa prateleira não se repete nos grupos abaixo */
+    var usados={};
+    html += editorial(lista, usados);
     var por={}; lista.forEach(function(x){ (por[x.e._grupo]=por[x.e._grupo]||[]).push(x); });
+    var cap = matchMedia("(min-width:860px)").matches ? 8 : 12;
     GRUPOS.forEach(function(g){
-      var l=por[g.id]; if(!l) return;
-      html += '<section class="secao" '+attrCor(g.id)+' aria-label="'+esc(g.rotulo)+'"><div class="secao-cab"><span class="faixa"></span><h2>'+esc(g.rotulo)+'</h2><span class="q">'+l.length+'</span>'+
-        (g.id==="cinema"?'<button type="button" class="ver" data-irvista="cinema">salas de cinema</button>':g.id==="exposicao"?'<button type="button" class="ver" data-irvista="arte" aria-label="Ver todas as exposições na aba Exposições">ver todas</button>':(l.length>4?'<button type="button" class="ver" data-grupo="'+esc(g.id)+'">ver '+(l.length>12?"todos":"tudo")+'</button>':""))+'</div><div class="trilho">';
-      l.slice(0, matchMedia("(min-width:860px)").matches ? 8 : 12).forEach(function(x){ html+=cartaz(x.e, x.ss); });
+      var tudo=por[g.id]; if(!tudo) return;
+      var l=tudo.filter(function(x){ return !usados[x.e.id]; }); if (!l.length) return;
+      html += '<section class="secao" '+attrCor(g.id)+' aria-label="'+esc(g.rotulo)+'"><div class="secao-cab"><span class="faixa"></span><h2>'+esc(g.rotulo)+'</h2><span class="q">'+tudo.length+'</span>'+
+        (g.id==="cinema"?'<button type="button" class="ver" data-irvista="cinema">salas de cinema</button>':g.id==="exposicao"?'<button type="button" class="ver" data-irvista="arte" aria-label="Ver todas as exposições na aba Exposições">ver todas</button>':(tudo.length>Math.min(l.length,cap)?'<button type="button" class="ver" data-grupo="'+esc(g.id)+'">ver '+(tudo.length>12?"todos":"tudo")+'</button>':""))+'</div><div class="trilho">';
+      l.slice(0, cap).forEach(function(x){ html+=cartaz(x.e, x.ss); });
       html += '</div></section>';
     });
   }
@@ -847,15 +896,17 @@ function renderCartaz(){
 /* camada editorial, montada sozinha a partir dos dados: um destaque do dia e notas curtas.
    Nada aqui é curadoria humana: são recortes por regra (hoje à noite, de graça, fim de semana). */
 var PALCO_DE_PALCO = {teatro:1, show:1, danca:1, concerto:1, samba:1, standup:1, forro:1};
-function editorial(lista){
-  var html="", usados={};
-  var cand = lista.filter(function(x){ return x.e._capa && PALCO_DE_PALCO[x.e._grupo] && difDias(HOJE, x.s.inicio.slice(0,10))<=3; });
+function imagemPropria(e){ return !!(e._capa && e._capa.f) && USO_IMG[e.imagem]===1 && (USO_IMG["f:"+e._capa.f]||0)<=1; }
+function editorial(lista, usados){
+  var html="";
+  var cand = lista.filter(function(x){ return imagemPropria(x.e) && PALCO_DE_PALCO[x.e._grupo] && difDias(HOJE, x.s.inicio.slice(0,10))<=3; });
   if (cand.length){
     var semente=0; for (var i=0;i<HOJE.length;i++) semente=(semente*31+HOJE.charCodeAt(i))%9973;
     var d=cand.slice(0,Math.min(6,cand.length))[semente%Math.min(6,cand.length)], e=d.e; usados[e.id]=1;
-    html+='<article class="destaque" '+attrCor(e._grupo)+'><button type="button" class="abrir" data-ev="'+esc(e.id)+'">'+capa(e)+
+    var kc=COR[e._grupo]||PAPEL.outros; if (contraste(kc,"#131312")<4.5) kc="#eeebe4";
+    html+='<article class="destaque" '+attrCor(e._grupo).replace('style="','style="--kc:'+kc+';')+'><button type="button" class="abrir" data-ev="'+esc(e.id)+'">'+capa(e)+
       '<span class="txt"><span class="kick">Destaque · '+esc(genRot(e.genero))+'</span><h2>'+esc(e.titulo)+'</h2>'+
-      '<span class="onde">'+esc(e._palco.nome)+(e._palco.bairro?" · "+esc(e._palco.bairro):"")+'</span><span class="quando">'+esc(quandoTxt(e))+'</span>'+
+      '<span class="onde">'+esc(e._palco.nome)+(e._palco.bairro?" · "+esc(e._palco.bairro):"")+'</span><span class="quando">'+esc(quandoTxt(e, d.ss))+'</span>'+
       '<span class="pills">'+preco(e)+classif(e)+'</span></span></button>'+
       '<button type="button" class="quero" data-quero="'+esc(e.id)+'" aria-pressed="'+QUERO.has(e.id)+'" aria-label="Quero ver: '+esc(e.titulo)+'">'+ICO.coracao+'</button></article>';
   }
@@ -867,11 +918,13 @@ function editorial(lista){
     {id:"gratis", tit:"De graça nesta semana", kick:"entrada grátis", f:function(e){ return espet(e) && e.gratuito===true && e._ss.some(function(s){ return s.inicio.slice(0,10)<=semana; }); }},
     {id:"fds", tit:"Fim de semana", kick:dm(sab)+(dom!==sab?" e "+dm(dom):""), f:function(e){ return espet(e) && e._ss.some(function(s){ var d=s.inicio.slice(0,10); return d===sab||d===dom; }); }}
   ];
+  /* m3: a prateleira usa as mesmas sessões (as da janela) que o grupo mostraria, então o período do cartaz é um só */
   notas.forEach(function(n){
-    var l=EV.filter(function(e){ return passa(e) && !usados[e.id] && n.f(e); }).map(function(e){ return {e:e, s:e._ss[0], ss:e._ss}; }).sort(cmpEv);
+    var l=lista.filter(function(x){ return !usados[x.e.id] && n.f({genero:x.e.genero, gratuito:x.e.gratuito, _ss:x.ss}); }).sort(cmpEv);
     if (l.length<3) return;
+    l=l.slice(0,10); l.forEach(function(x){ usados[x.e.id]=1; });
     html+='<section class="secao nota" '+attrCor("outros")+' aria-label="'+esc(n.tit)+'"><div class="secao-cab"><h2>'+esc(n.tit)+'</h2><span class="kick">'+esc(n.kick)+' · '+l.length+'</span></div><div class="trilho">'+
-      l.slice(0,10).map(function(x){ return cartaz(x.e, x.ss); }).join("")+'</div></section>';
+      l.map(function(x){ return cartaz(x.e, x.ss); }).join("")+'</div></section>';
   });
   return html;
 }
@@ -893,9 +946,31 @@ function squarify(itens, x, y, w, h){
   if (fila.length) assenta(fila);
   return out;
 }
+function GRUPO_EXISTE(id){ for (var i=0;i<GRUPOS.length;i++) if (GRUPOS[i].id===id) return true; return false; }
+/* exposições abertas em algum dia da janela (null enquanto o arte.json não chegou) */
+function contarArteJanela(){
+  if (!ARTE_DADOS) return null;
+  var r=intervalo(F.janela);
+  return listaArte().filter(function(x){ return (!x.de || x.de<=r[1]) && (!x.ate || x.ate>=r[0]); }).length;
+}
+/* filmes com sessão ainda por começar na janela (null enquanto o cinema.json não chegou) */
+function contarFilmesJanela(){
+  if (!CIN) return null;
+  var r=intervalo(F.janela), fs={};
+  Object.keys(CIN._porDia).forEach(function(d){ if (d<r[0]||d>r[1]) return; CIN._porDia[d].forEach(function(s){ if (d!==HOJE || s.i>=AGORA) fs[s.f]=1; }); });
+  return Object.keys(fs).length;
+}
 function pintarMuro(){
   var muro=$("#muro"); if(!muro) return;
   var porG={}; EV.forEach(function(e){ if (passa(e,{grupo:1}) && sessNaJanela(e,F.janela).length) porG[e._grupo]=(porG[e._grupo]||0)+1; });
+  /* M6: sem filtro, o muro mostra as duas maiores ofertas do app: exposições (arte.json + guia) e filmes em cartaz na janela;
+     esses dois cartazes levam à aba deles em vez de filtrar */
+  var PORTAL={};
+  if (!nFiltros() && !F.q.trim()){
+    var nA=contarArteJanela(), nC=contarFilmesJanela();
+    if (nA!=null && GRUPO_EXISTE("exposicao")){ porG.exposicao=nA; PORTAL.exposicao="arte"; }
+    if (nC!=null && GRUPO_EXISTE("cinema")){ porG.cinema=nC; PORTAL.cinema="cinema"; }
+  }
   var com=GRUPOS.filter(function(g){ return porG[g.id]||F.grupos.has(g.id); }), sem=GRUPOS.filter(function(g){ return !porG[g.id] && !F.grupos.has(g.id); });
   var W=muro.clientWidth||340, H=Math.round(Math.min(Math.max(W*0.72, 230), 360));
   muro.style.height=H+"px";
@@ -911,8 +986,10 @@ function pintarMuro(){
     var g=r.it, n=porG[g.id]||0, area=r.w*r.h, curto=Math.min(r.w,r.h);
     var fs=Math.max(15, Math.min(curto*0.42, Math.sqrt(area)*0.3, 76));
     var rot=g.rotulo; if (fs*rot.length*0.36 > r.w-14) fs=Math.max(13, (r.w-14)/(rot.length*0.36));
-    var on=F.grupos.has(g.id);
-    return '<button type="button" class="lambe'+(g.id===maior&&area>20000?" dobra":"")+'" data-g="'+esc(g.id)+'" aria-pressed="'+on+'" aria-label="'+esc(rot)+': '+n+' eventos" '+attrCor(g.id).replace('style="','style="left:'+(r.x+GAP/2).toFixed(1)+'px;top:'+(r.y+GAP/2).toFixed(1)+'px;width:'+Math.max(0,r.w-GAP).toFixed(1)+'px;height:'+Math.max(0,r.h-GAP).toFixed(1)+'px;--fs:'+fs.toFixed(0)+'px;--fn:'+Math.max(12,Math.min(fs*0.42,22)).toFixed(0)+'px;--reg:'+(fs>40?3:fs>24?2:0)+'px;')+'>'+
+    var on=F.grupos.has(g.id), pv=PORTAL[g.id];
+    var alvo = pv ? 'data-irvista="'+pv+'" data-portal="'+esc(g.id)+'" aria-label="'+esc(rot)+': '+n+(g.id==="cinema"?(n===1?" filme":" filmes"):(n===1?" exposição":" exposições"))+', abre a aba" '
+                  : 'data-g="'+esc(g.id)+'" aria-pressed="'+on+'" aria-label="'+esc(rot)+': '+n+' eventos" ';
+    return '<button type="button" class="lambe'+(g.id===maior&&area>20000?" dobra":"")+'" '+alvo+attrCor(g.id).replace('style="','style="left:'+(r.x+GAP/2).toFixed(1)+'px;top:'+(r.y+GAP/2).toFixed(1)+'px;width:'+Math.max(0,r.w-GAP).toFixed(1)+'px;height:'+Math.max(0,r.h-GAP).toFixed(1)+'px;--fs:'+fs.toFixed(0)+'px;--fn:'+Math.max(12,Math.min(fs*0.42,22)).toFixed(0)+'px;--reg:'+(fs>40?3:fs>24?2:0)+'px;')+'>'+
       '<span class="nn">'+n+'</span><span class="nm">'+esc(rot)+'</span></button>';
   }).join("");
   /* encaixe: encolhe o nome até caber na largura e o par número+nome até caber na altura */
@@ -988,19 +1065,34 @@ function carregarCinema(){
   var arq = PARAM_CIN && /^[\w.-]+\.json$/.test(PARAM_CIN) ? "dados/"+PARAM_CIN : "dados/cinema.json";
   CIN_PEDIDO = buscaJSON(arq).then(function(j){
     if (!j || !j.filmes || !j.sessoes) throw new Error("cinema.json sem filmes");
-    Object.keys(j.cinemas||{}).forEach(function(k){ var c=j.cinemas[k]; c._circ=circuitoCinema(c); c._zona=zonaDe(c.bairro, c.lat, c.lon)||"Outras"; c._busca=norm([c.nome,c.rede,c.bairro].join(" ")); });
+    Object.keys(j.cinemas||{}).forEach(function(k){ var c=j.cinemas[k]; if (!c.id) c.id=k; c._circ=circuitoCinema(c); c._zona=zonaLugar(c)||"Outras"; c._busca=norm([c.nome,c.rede,c.bairro].join(" ")); });
     Object.keys(j.filmes).forEach(function(k){ var f=j.filmes[k]; if (!f.cartaz && f.cartaz_h) f.cartaz=f.cartaz_h; f._capa=(typeof f.cartaz==="string"&&CAPAS[f.cartaz])||null; f._busca=norm([f.titulo,f.original,f.direcao].join(" ")); });
-    CIN=j; if (VISTA==="cinema") render();
+    /* M7: índice por dia e por filme, montado uma vez; nenhuma tela varre as ~8 mil sessões de novo */
+    var pd={}, pf={};
+    j.sessoes.forEach(function(s){ if (!s || typeof s.i!=="string" || !j.cinemas[s.c] || !j.filmes[s.f]) return; var d=s.i.slice(0,10); (pd[d]=pd[d]||[]).push(s); (pf[s.f]=pf[s.f]||[]).push(s); });
+    function porHora(a,b){ return a.i<b.i?-1:a.i>b.i?1:0; }
+    Object.keys(pd).forEach(function(d){ pd[d].sort(porHora); }); Object.keys(pf).forEach(function(f){ pf[f].sort(porHora); });
+    j._porDia=pd; j._porF=pf;
+    CIN=j; if (VISTA==="cinema") render(); else if (VISTA==="cartaz") pintarMuro();
+    rodape();
   }).catch(function(e){ CIN_ERRO=true; console.warn(e); if (VISTA==="cinema") render(); });
   return CIN_PEDIDO;
 }
 var REDES_COMERCIAIS = ["cinemark","cinepolis","uci","kinoplex","cinesystem","moviecom","cine araujo","cineflix","playarte"];
+var REDES_PUBLICAS = ["spcine"];
+/* G4: três circuitos. Arte = só a lista EXPLÍCITA de circuitos.json (id ou nome exato da sala); Público = salas da
+   prefeitura (Spcine, CEU); Comercial = redes; o resto fica sem circuito (sem selo), nunca "arte" por omissão. */
+var CIRC_CINE_ROT = {comercial:"Comercial", arte:"Arte", publico:"Público (Spcine e CEU)"};
+function naLista(lista, c){ var id=String(c.id||""), n=norm(c.nome||"").trim(); return (lista||[]).some(function(x){ x=String(x); return x===id || norm(x).trim()===n; }); }
 function circuitoCinema(c){
-  var cfg = CIRC && CIRC.cinema || {}, id=String(c.id||""), n=norm((c.rede||"")+" "+(c.nome||""));
-  if ((cfg.independente||[]).indexOf(id)>=0) return "arte";
-  if ((cfg.comercial||[]).indexOf(id)>=0) return "comercial";
+  var cfg = CIRC && CIRC.cinema || {}, rede=norm(c.rede||""), n=norm((c.rede||"")+" "+(c.nome||""));
+  if (naLista(cfg.arte, c) || naLista(cfg.independente, c)) return "arte";
+  if (naLista(cfg.comercial, c)) return "comercial";
+  if (naLista(cfg.publico, c)) return "publico";
+  var pub = (cfg.redes_publicas||REDES_PUBLICAS).map(norm);
+  if (pub.some(function(r){ return rede===r || n.indexOf(r)>=0; }) || /(^|\s)ceu(\s|$)/.test(norm(c.nome||""))) return "publico";
   var redes = (cfg.redes_comerciais||REDES_COMERCIAIS).map(norm);
-  return redes.some(function(r){ return n.indexOf(r)>=0; }) ? "comercial" : "arte";
+  return redes.some(function(r){ return n.indexOf(r)>=0; }) ? "comercial" : null;
 }
 function classeCI(c){ c=String(c||"").trim(); if (/^l$|^livre/i.test(c)) return {k:"L",t:"L"}; var m=c.match(/\d+/); return m?{k:"c"+m[0],t:m[0]}:null; }
 function ciHTML(c){ var x=classeCI(c); return x?'<span class="ci '+x.k+'" title="Classificação: '+esc(c)+'">'+x.t+'</span>':""; }
@@ -1017,8 +1109,7 @@ function temIdioma(s, id){ var t=s.tipos||[]; return t.indexOf(id)>=0 || t.index
 function sessoesCine(dia){
   var lim = dia===HOJE ? AGORA : "";
   var q = F.q ? norm(F.q).trim().split(/\s+/) : [];
-  return CIN.sessoes.filter(function(s){
-    if (s.i.slice(0,10)!==dia) return false;
+  return (CIN._porDia[dia]||[]).filter(function(s){
     if (lim && s.i < lim) return false;
     var c=CIN.cinemas[s.c], f=CIN.filmes[s.f]; if (!c||!f) return false;
     if (CZONA && c._zona!==CZONA) return false;
@@ -1035,14 +1126,14 @@ function renderCinema(){
     return;
   }
   if (!DIA_CIN || DIA_CIN<HOJE) DIA_CIN=HOJE;
-  var cont={}; CIN.sessoes.forEach(function(s){ var d=s.i.slice(0,10); if (d>=HOJE && (d!==HOJE || s.i>=AGORA)) cont[d]=1; });
+  var cont={}; Object.keys(CIN._porDia).forEach(function(d){ var l=CIN._porDia[d]; if (d>HOJE || (d===HOJE && l.length && l[l.length-1].i>=AGORA)) cont[d]=1; });
   var html='<div class="dias" role="group" aria-label="Dia do cinema">';
   for (var i=0;i<7;i++){ var d=somaDias(HOJE,i), a=d.split("-");
     html+='<button type="button" data-cdia="'+d+'" aria-pressed="'+(DIA_CIN===d)+'" class="'+(i===0?"hoje":"")+'"'+(cont[d]?"":" disabled")+' aria-label="'+esc(rotDia(d))+'"><span>'+SEM[diaSem(d)]+'</span><b>'+(+a[2])+'</b><i>'+MES[+a[1]-1]+'</i></button>'; }
   html+='</div>';
   var zs={}; Object.keys(CIN.cinemas).forEach(function(k){ zs[CIN.cinemas[k]._zona]=1; });
   html+='<div class="cine-bar" role="group" aria-label="Ver por"><button type="button" data-cseg="filmes" aria-pressed="'+(CSEG==="filmes")+'">Filmes</button><button type="button" data-cseg="salas" aria-pressed="'+(CSEG==="salas")+'">Cinemas</button>'+
-    '<button type="button" class="dir" data-ccirc="" aria-pressed="'+(!CCIRC)+'">Todo circuito</button><button type="button" data-ccirc="comercial" aria-pressed="'+(CCIRC==="comercial")+'">Comercial</button><button type="button" data-ccirc="arte" aria-pressed="'+(CCIRC==="arte")+'">Arte e independente</button>'+
+    '<button type="button" class="dir" data-ccirc="" aria-pressed="'+(!CCIRC)+'">Todo circuito</button>'+["comercial","arte","publico"].map(function(k){ return '<button type="button" data-ccirc="'+k+'" aria-pressed="'+(CCIRC===k)+'">'+CIRC_CINE_ROT[k]+'</button>'; }).join("")+
     '</div><div class="cine-bar" role="group" aria-label="Idioma"><button type="button" data-cid="" aria-pressed="'+(!CIDIOMA)+'">Todos os idiomas</button><button type="button" data-cid="LEG" aria-pressed="'+(CIDIOMA==="LEG")+'">Legendado</button><button type="button" data-cid="DUB" aria-pressed="'+(CIDIOMA==="DUB")+'">Dublado</button>'+
     '</div><div class="cine-bar" role="group" aria-label="Zona"><button type="button" data-czona="" aria-pressed="'+(!CZONA)+'">Toda a cidade</button>'+
     ZONAS.concat(["Outras"]).filter(function(z){ return zs[z]; }).map(function(z){ return '<button type="button" data-czona="'+esc(z)+'" aria-pressed="'+(CZONA===z)+'">'+esc(z)+'</button>'; }).join("")+'</div>';
@@ -1058,7 +1149,7 @@ function renderCinema(){
       var f=CIN.filmes[fid], l=porF[fid], nc={}, na=0; l.forEach(function(s){ nc[s.c]=1; if (CIN.cinemas[s.c]._circ==="arte") na++; }); var n=Object.keys(nc).length;
       return '<article class="filme"><button type="button" class="abrir" data-filme="'+esc(fid)+'">'+posterHTML(f)+'<h3>'+esc(f.titulo)+'</h3>'+
         '<span class="meta">'+ciHTML(f.classificacao)+(f.duracao?esc(duracao(f.duracao)):"")+(na*2>l.length?'<span class="arte">arte</span>':"")+'</span>'+
-        '<span class="quando">'+n+(n===1?" cinema":" cinemas")+' · '+hora(l[0].i)+(l.length>1?" a "+hora(l[l.length-1].i):"")+'</span></button></article>';
+        '<span class="quando">'+n+(n===1?" cinema":" cinemas")+' · '+hora(l[0].i)+(hora(l[l.length-1].i)!==hora(l[0].i)?" a "+hora(l[l.length-1].i):"")+'</span></button></article>';
     }).join("")+'</div>';
   } else {
     cids.sort(function(a,b){ return (FAV.has("cin:"+b)-FAV.has("cin:"+a)) || CIN.cinemas[a].nome.localeCompare(CIN.cinemas[b].nome,"pt"); });
@@ -1075,11 +1166,15 @@ function renderCinema(){
         }).join(""))+'</article>';
     }).join("")+'</div>';
   }
-  // salas culturais que já estão no guia (CineSesc, CCSP, IMS...): filmes do dia
-  var cult=EV.filter(function(e){ return e._grupo==="cinema" && passa(e,{grupo:1}) && e._ss.some(function(s){ return s.inicio.slice(0,10)===DIA_CIN; }); });
-  if (cult.length) html+='<section class="secao" '+attrCor("cinema")+'><div class="secao-cab"><span class="faixa"></span><h2>Mostras e salas culturais</h2><span class="q">'+cult.length+'</span></div><div class="trilho">'+cult.map(function(e){ return cartaz(e, e._ss.filter(function(s){ return s.inicio.slice(0,10)===DIA_CIN; })); }).join("")+'</div></section>';
-  html+='<p class="muro-rodape" style="margin-top:22px">Salas comerciais: Ingresso.com, dados de '+esc(CIN.gerado_em?rotDia(CIN.gerado_em.slice(0,10))+", "+hora(CIN.gerado_em):"?")+((CIN.fonte&&CIN.fonte.ok===false)?' · <strong style="color:var(--aviso)">a coleta de hoje falhou; dados anteriores</strong>':"")+'. Confira na compra.</p>';
+  /* m4: o rodapé nomeia todas as fontes de sessão, não só o Ingresso.com */
+  html+='<p class="muro-rodape" style="margin-top:22px">Sessões: '+esc(fontesCinemaTxt())+'; dados de '+esc(CIN.gerado_em?rotDia(CIN.gerado_em.slice(0,10))+", "+hora(CIN.gerado_em):"?")+((CIN.fonte&&CIN.fonte.ok===false)?' · <strong style="color:var(--aviso)">a coleta de hoje falhou; dados anteriores</strong>':"")+'. Confira na compra.</p>';
   $("#painel").innerHTML=html;
+}
+var NOME_FONTE_CINE = {ingresso:"Ingresso.com (redes e salas de rua)", spcine:"Spcine (salas da prefeitura e CEUs)", cinemateca:"Cinemateca Brasileira", marquise:"Cine Marquise"};
+function fontesCinemaTxt(){
+  var l=[]; if (CIN.fonte && CIN.fonte.nome) l.push(NOME_FONTE_CINE[CIN.fonte.nome]||CIN.fonte.nome);
+  Object.keys(CIN.fontes_extra||{}).forEach(function(k){ l.push(NOME_FONTE_CINE[k]||k); });
+  return l.length ? l.join(", ") : "Ingresso.com";
 }
 /* "como chegar": busca do endereço no mapa do celular (sem chave, sem coordenada inventada) */
 function mapaLink(nome, end){
@@ -1097,14 +1192,15 @@ function abrirFilme(fid, dia){
   if (!$("#det").open) ULTIMO_FOCO=document.activeElement;
   FILME_ABERTO=fid; FDIA=dia||DIA_CIN||HOJE; EV_ABERTO=null; ARTE_ABERTA=null;
   var dlg=$("#det"); dlg.setAttribute("style","--cor:"+PAPEL.cinema+";--tc:#131312;--sobre:"+SOBRE.cinema);
-  var dias={}; CIN.sessoes.forEach(function(s){ if (s.f===fid){ var d=s.i.slice(0,10); if (d>=HOJE && (d!==HOJE||s.i>=AGORA) && (!CIDIOMA||temIdioma(s,CIDIOMA)) && (!CZONA||CIN.cinemas[s.c]._zona===CZONA) && (!CCIRC||CIN.cinemas[s.c]._circ===CCIRC)) dias[d]=(dias[d]||0)+1; } });
+  var doFilme=(CIN._porF[fid]||[]).filter(function(s){ var d=s.i.slice(0,10); return d>=HOJE && (d!==HOJE||s.i>=AGORA) && (!CIDIOMA||temIdioma(s,CIDIOMA)) && (!CZONA||CIN.cinemas[s.c]._zona===CZONA) && (!CCIRC||CIN.cinemas[s.c]._circ===CCIRC); });
+  var dias={}; doFilme.forEach(function(s){ var d=s.i.slice(0,10); dias[d]=(dias[d]||0)+1; });
   if (!dias[FDIA]){ var ks=Object.keys(dias).sort(); if (ks.length) FDIA=ks[0]; }
-  var ss=CIN.sessoes.filter(function(s){ return s.f===fid && s.i.slice(0,10)===FDIA && (FDIA!==HOJE||s.i>=AGORA) && (!CZONA||CIN.cinemas[s.c]._zona===CZONA) && (!CIDIOMA||temIdioma(s,CIDIOMA)) && (!CCIRC||CIN.cinemas[s.c]._circ===CCIRC); });
+  var ss=doFilme.filter(function(s){ return s.i.slice(0,10)===FDIA; });
   var pc={}, ordem=[]; ss.forEach(function(s){ if(!pc[s.c]){ pc[s.c]=[]; ordem.push(s.c); } pc[s.c].push(s); });
   ordem.sort(function(a,b){ return (FAV.has("cin:"+b)-FAV.has("cin:"+a)) || pc[a][0].i.localeCompare(pc[b][0].i) || CIN.cinemas[a].nome.localeCompare(CIN.cinemas[b].nome,"pt"); });
   var u=urlSegura(f.url), fd='';
   for (var i=0;i<7;i++){ var d=somaDias(HOJE,i); fd+='<button type="button" data-fdia="'+d+'" aria-pressed="'+(d===FDIA)+'"'+(dias[d]?"":" disabled")+'>'+(i===0?"hoje":esc(rotDia(d)))+'</button>'; }
-  var filtros=[CZONA, CIDIOMA==="LEG"?"legendado":CIDIOMA==="DUB"?"dublado":"", CCIRC==="arte"?"arte e independente":CCIRC==="comercial"?"comercial":""].filter(Boolean).join(" · ");
+  var filtros=[CZONA, CIDIOMA==="LEG"?"legendado":CIDIOMA==="DUB"?"dublado":"", CCIRC?CIRC_CINE_ROT[CCIRC].toLowerCase():""].filter(Boolean).join(" · ");
   dlg.innerHTML='<div class="folha"><div class="rolar"><div style="position:relative">'+
     '<button type="button" class="fechar" id="det-fechar" aria-label="Fechar">'+ICO.fechar+'</button>'+
     '<div class="fcab-filme">'+posterHTML(f)+'<div><span class="gen">Cinema</span><h2 id="det-tit" style="margin-top:8px">'+esc(f.titulo)+'</h2>'+
@@ -1118,7 +1214,7 @@ function abrirFilme(fid, dia){
     '<ul class="fsalas" id="f-salas">'+(ordem.length?ordem.map(function(cid){ var c=CIN.cinemas[cid];
       return '<li><b>'+esc(c.nome)+'</b><span class="end">'+esc([c.bairro,c._zona!=="Outras"?c._zona:""].filter(Boolean).join(" · "))+'</span> '+mapaLink(c.nome, c.endereco||c.bairro)+'<div class="horas">'+pc[cid].map(horaLink).join("")+'</div></li>'; }).join(""):'<li>Sem sessões neste dia com estes filtros.</li>')+'</ul>'+
   '</div></div>';
-  if (!dlg.open){ if (typeof dlg.showModal==="function") dlg.showModal(); else dlg.setAttribute("open",""); }
+  if (!dlg.open){ empurrarCamada("det"); if (typeof dlg.showModal==="function") dlg.showModal(); else dlg.setAttribute("open",""); }
   var sb=$("#det-sobre"); if (sb && sb.scrollHeight>sb.clientHeight+4) $("#det-ler").hidden=false;
   if (!dia) $("#det-fechar").focus();
 }
@@ -1127,10 +1223,12 @@ function abrirFilme(fid, dia){
 var ARTE_DADOS=null, ARTE_ERRO=false, ARTE_PEDIDO=null, ARTE_IDX={}, ARTE_ABERTA=null, PSEUDO={};
 var ATIPO="", ACIRC="", AGRATIS=false, AQUANDO="", AZONA="", ALIM=48, LSEG="palcos";
 var TIPO_ROT = {museu:"Museu", centro:"Centro cultural", galeria:"Galeria", outro:"Espaço de arte"};
+/* G5: circuito do lugar só vem do dado (lista curada no coletor); ausente = sem selo e fora dos recortes de circuito */
+var ARTE_CIRC = {institucional:"Institucional", publico:"Público", independente:"Independente"};
 function prepLugar(l){
   l._tipo = TIPO_ROT[l.tipo] ? l.tipo : "outro";
-  l._circ = l.circuito==="independente" ? "independente" : "institucional";
-  l._zona = zonaDe(l.bairro, l.lat, l.lon) || "";
+  l._circ = ARTE_CIRC[l.circuito] ? l.circuito : null;
+  l._zona = zonaLugar(l) || "";
   return l;
 }
 function carregarArte(){
@@ -1138,7 +1236,8 @@ function carregarArte(){
   var arq = arqOk(PARAM_ARTE) ? "dados/"+PARAM_ARTE : "dados/arte.json";
   function pronto(j){
     var lug={}; Object.keys(j.lugares||{}).forEach(function(k){ var l=j.lugares[k]; if (!l||typeof l!=="object") return; if (!l.id) l.id=k; lug[k]=prepLugar(l); });
-    j.lugares=lug; ARTE_DADOS=j; if (VISTA==="arte"||VISTA==="palcos") render();
+    j.lugares=lug; ARTE_DADOS=j; if (VISTA==="arte"||VISTA==="palcos") render(); else if (VISTA==="cartaz") pintarMuro();
+    rodape();
   }
   ARTE_PEDIDO = buscaJSON(arq).then(function(j){
     if (!j || !Array.isArray(j.exposicoes)) throw new Error("arte.json sem exposicoes");
@@ -1158,22 +1257,37 @@ function periodoArte(x){
   if (x.de) return "desde "+diaMes(x.de)+" · sem data para terminar";
   return "em cartaz";
 }
+/* M10: mesmo lugar e título quase igual (uma ou duas letras: "Benin" × "Benim") = a mesma exposição vinda de duas fontes */
+function distEd(a, b, max){
+  if (Math.abs(a.length-b.length)>max) return max+1;
+  var ant=[], i, j; for (j=0;j<=b.length;j++) ant[j]=j;
+  for (i=1;i<=a.length;i++){ var cur=[i], menor=i;
+    for (j=1;j<=b.length;j++){ cur[j]=Math.min(ant[j]+1, cur[j-1]+1, ant[j-1]+(a.charCodeAt(i-1)===b.charCodeAt(j-1)?0:1)); if (cur[j]<menor) menor=cur[j]; }
+    if (menor>max) return max+1; ant=cur; }
+  return ant[b.length];
+}
+function chaveTxt(t){ return norm(t).replace(/[^a-z0-9]+/g,""); }
 /* lista do dia: arte.json (sem as já encerradas) + exposições do guia, sem repetir título + lugar */
 function listaArte(){
-  var out=[], chaves={}; ARTE_IDX={};
-  function poe(x){ var k=norm(x.titulo).replace(/[^a-z0-9]+/g,"")+"|"+norm(x.l.nome).replace(/[^a-z0-9]+/g,""); if (chaves[k]) return; chaves[k]=1;
+  var out=[], porLugar={}; ARTE_IDX={};
+  function poe(x){
+    var kl=chaveTxt(x.l.nome), kt=chaveTxt(x.titulo), vistos=porLugar[kl]||(porLugar[kl]=[]);
+    for (var i=0;i<vistos.length;i++){ if (vistos[i]===kt || (kt.length>=12 && distEd(vistos[i], kt, 2)<=2)) return; }
+    vistos.push(kt);
     x._busca=norm([x.titulo,x.artista,x.l.nome,x.l.bairro,TIPO_ROT[x.l._tipo]].join(" ")); out.push(x); ARTE_IDX[x.id]=x; }
-  var lug=ARTE_DADOS.lugares;
+  var lug=ARTE_DADOS.lugares, porNome={};
+  Object.keys(lug).forEach(function(k){ porNome[chaveTxt(lug[k].nome)]=lug[k]; });
   (ARTE_DADOS.exposicoes||[]).forEach(function(e, i){
     if (!e || !e.titulo || (e.ate && e.ate<HOJE)) return;
-    var l=lug[e.lugar] || (lug[e.lugar||"?"]=prepLugar({id:e.lugar||"?", nome:e.lugar||"Lugar não informado", tipo:"outro", circuito:"independente"}));
+    var l=lug[e.lugar] || (lug[e.lugar||"?"]=prepLugar({id:e.lugar||"?", nome:e.lugar||"Lugar não informado", tipo:"outro", circuito:null}));
     poe({id:"a:"+(e.id||i), titulo:e.titulo, artista:e.artista||null, l:l, de:e.de||null, ate:e.ate||null, imagem:e.imagem, url:e.url, descricao:e.descricao,
       gratuito:e.gratuito, preco:e.preco||null, _capa:(typeof e.imagem==="string"&&CAPAS[e.imagem])||null});
   });
   EV.forEach(function(e){
     if (e.genero!=="exposicao") return;
-    var p=e._palco, l=PSEUDO[p.id] || (PSEUDO[p.id]=prepLugar({id:"p:"+p.id, palco:p.id, nome:p.nome, tipo:"centro", circuito:p._circ==="independente"?"independente":"institucional",
-      bairro:p.bairro, endereco:p.endereco, lat:p.lat, lon:p.lon, site:null, horario:null, gratis:null}));
+    /* M10: palco do guia que já é lugar do arte.json (CCSP) usa o mesmo lugar: não conta duas vezes */
+    var p=e._palco, l=porNome[chaveTxt(p.nome)] || PSEUDO[p.id] || (PSEUDO[p.id]=prepLugar({id:"p:"+p.id, palco:p.id, nome:p.nome, tipo:"centro", circuito:ARTE_CIRC[p._circ]?p._circ:null,
+      bairro:p.bairro, endereco:p.endereco, lat:p.lat, lon:p.lon, zona:p.zona, site:null, horario:null, gratis:null}));
     var d0=e._ss[0].inicio.slice(0,10), d1=e._ss[e._ss.length-1].inicio.slice(0,10);
     /* o guia só vê 60 dias: sessão até perto do fim da coleta = sem data para terminar */
     poe({id:"g:"+e.id, ev:e.id, titulo:e.titulo, artista:e.artista||null, l:l, de:d0>HOJE?d0:null, ate:difDias(HOJE,d1)>=45?null:d1, imagem:e.imagem, url:e.url,
@@ -1226,7 +1340,7 @@ function renderArte(){
   var zs={}; todas.forEach(function(x){ if (passaArte(x,{zona:1})) zs[x.l._zona||"Outras"]=1; });
   var html=barTipo()+
     '<div class="cine-bar" role="group" aria-label="Recortes">'+
-      '<button type="button" data-acirc="institucional" aria-pressed="'+(ACIRC==="institucional")+'">Institucional</button><button type="button" data-acirc="independente" aria-pressed="'+(ACIRC==="independente")+'">Independente</button>'+
+      ["institucional","publico","independente"].map(function(k){ return '<button type="button" data-acirc="'+k+'" aria-pressed="'+(ACIRC===k)+'">'+ARTE_CIRC[k]+'</button>'; }).join("")+
       '<button type="button" data-aflag="gratis" aria-pressed="'+AGRATIS+'" title="De graça ou com dia de entrada gratuita">Grátis</button>'+
       '<button type="button" data-aquando="termina" aria-pressed="'+(AQUANDO==="termina")+'">Termina em breve</button><button type="button" data-aquando="abre" aria-pressed="'+(AQUANDO==="abre")+'">Abre em breve</button>'+
     '</div>'+barZona(zs);
@@ -1248,7 +1362,7 @@ function renderArte(){
   html+='<section class="secao" '+attrCor("exposicao")+' aria-label="Todas as exposições"><div class="secao-cab"><span class="faixa"></span><h2>'+(AQUANDO==="termina"?"Últimos dias":AQUANDO==="abre"?"Abre em breve":"Todas")+'</h2><span class="q">'+l.length+'</span></div><div class="grade" id="a-grade">'+l.slice(0,ALIM).map(cartazArte).join("")+'</div></section>';
   if (l.length>ALIM) html+='<button type="button" class="mais" id="a-mais">Mostrar mais '+(l.length-ALIM)+'</button>';
   var g=ARTE_DADOS.gerado_em||"";
-  html+='<p class="muro-rodape" style="margin-top:22px">Museus, centros culturais e galerias'+(g?", dados de "+esc(rotDia(g.slice(0,10))):"")+'; exposições do Sesc e da prefeitura vêm do guia. Horário e dia grátis conferidos na página de cada lugar; confira antes de ir.</p>';
+  html+='<p class="muro-rodape" style="margin-top:22px">Museus, centros culturais e galerias'+(g?", dados de "+esc(rotDia(g.slice(0,10))):"")+'; também entram as exposições dos palcos do guia (CCSP). Horário e dia grátis conferidos na página de cada lugar; confira antes de ir.</p>';
   $("#painel").innerHTML=html;
 }
 function abrirArte(id){
@@ -1273,6 +1387,7 @@ function abrirArte(id){
     (pillsArte(x)?'<div class="meta pills">'+pillsArte(x)+'</div>':"")+
     (x.descricao?'<div class="sobre"><p class="corta" id="det-sobre">'+esc(x.descricao)+'</p><button type="button" class="lermais" id="det-ler" hidden>Ler mais</button></div>':"")+
     '<div style="height:24px"></div></div></div>';
+  if (!dlg.open) empurrarCamada("det");
   if (typeof dlg.showModal==="function") dlg.showModal(); else dlg.setAttribute("open","");
   var sb=$("#det-sobre"); if (sb && sb.scrollHeight>sb.clientHeight+4) $("#det-ler").hidden=false;
   $("#det-fechar").focus();
@@ -1308,8 +1423,9 @@ function renderPalcos(){
   var topo='<div class="seg" role="group" aria-label="Tipo de lugar"><button type="button" data-lseg="palcos" aria-pressed="'+(LSEG==="palcos")+'">Palcos</button><button type="button" data-lseg="arte" aria-pressed="'+(LSEG==="arte")+'">Museus e galerias</button></div>';
   if (LSEG==="arte") return renderMuseus(topo);
   var um = F.circ.size===1 ? Array.from(F.circ)[0] : "";
+  var temC={}; EV.forEach(function(e){ if (e._palco._circ) temC[e._palco._circ]=1; });
   topo+='<div class="cine-bar" role="group" aria-label="Circuito"><button type="button" data-pcirc="" aria-pressed="'+(!F.circ.size)+'">Todo circuito</button>'+
-    ["comercial","independente","publico"].map(function(c){ return '<button type="button" data-pcirc="'+c+'" aria-pressed="'+(um===c)+'">'+CIRC_ROT[c]+'</button>'; }).join("")+'</div>';
+    CIRC_ORDEM.filter(function(c){ return temC[c] || um===c; }).map(function(c){ return '<button type="button" data-pcirc="'+c+'" aria-pressed="'+(um===c)+'">'+CIRC_ROT[c]+'</button>'; }).join("")+'</div>';
   var por={};
   EV.forEach(function(e){ if(!passa(e)) return; var p=e._palco; (por[p.id]=por[p.id]||{p:p, ev:[]}).ev.push(e); });
   var lista=Object.keys(por).map(function(k){ return por[k]; });
@@ -1346,6 +1462,15 @@ function conflitos(lista){
   return m;
 }
 function sessoesAgenda(){ return Array.from(AGENDA).map(function(id){ return SESS_ID[id]; }).filter(Boolean).sort(cmpSess); }
+/* m7: sessão salva que ainda não passou mas sumiu dos dados (o coletor trocou o id ou a fonte tirou) */
+function agendaSumida(){
+  return Array.from(AGENDA).filter(function(id){
+    if (SESS_ID[id]) return false;
+    var m=/@(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/.exec(String(id)); if (!m) return false;
+    return m[1]>HOJE || (m[1]===HOJE && minutos(m[1]+"T"+m[2])+DURACAO_MIN > minutos(AGORA));
+  });
+}
+function nomeDaSumida(id){ var eid=String(id).split("@")[0], e=G.eventos[eid]; return e&&e.titulo ? e.titulo : eid.replace(/--.*$/,"").replace(/-/g," "); }
 function renderVoce(){
   var ss=sessoesAgenda(), qq=EV.filter(function(e){ return QUERO.has(e.id); }), fv=Object.keys(FAV.size?(function(){ var o={}; FAV.forEach(function(x){o[x]=1;}); return o; })():{});
   var html='<div class="seg" role="group" aria-label="Salvos">'+
@@ -1355,6 +1480,8 @@ function renderVoce(){
     if (!qq.length) html+='<div class="vazio"><b>Nada marcado</b>Toque no coração de um cartaz para guardá-lo aqui.</div>';
     else { qq.sort(function(a,b){ return cmpSess(a._ss[0],b._ss[0]); }); html+='<div class="heroi"><span class="num">'+qq.length+'</span><span class="rot">quero ver</span></div><div class="grade">'+qq.map(function(e){ return cartaz(e); }).join("")+'</div>'; }
   } else {
+    var sum=agendaSumida();
+    if (sum.length) html+='<div class="aviso-ag" role="note">'+ICO.alerta+'<span>'+(sum.length===1?"1 sessão salva saiu da programação":sum.length+" sessões salvas saíram da programação")+': '+esc(sum.map(nomeDaSumida).join("; "))+'. Confira na página do evento.</span><button type="button" id="ag-sumidas">tirar</button></div>';
     if (!ss.length) html+='<div class="vazio"><b>Agenda vazia</b>Na Programação, toque no + de uma sessão; ou abra um evento e escolha a sessão.</div>';
     else {
       var cf=conflitos(ss), dia=null;
@@ -1383,6 +1510,7 @@ function abrir(id){
       '<div style="position:relative">'+cp+
       '<button type="button" class="fechar" id="det-fechar" aria-label="Fechar">'+ICO.fechar+'</button></div>'+
       '<div class="cab"><span class="gen">'+esc(genRot(e.genero))+'</span><h2 id="det-tit">'+esc(e.titulo)+'</h2>'+(e.artista?'<div class="art">'+esc(e.artista)+'</div>':"")+
+        (temporadaTxt(e)?'<div class="temporada">'+esc(temporadaTxt(e).replace(/^e/,"E"))+' · a fonte só publicou as datas abaixo</div>':"")+
         '<div class="local"><div><b>'+esc(p.nome)+'</b><span>'+esc([p.endereco,p.bairro].filter(Boolean).join(" · "))+'</span> '+mapaLink(p.nome, p.endereco||p.bairro)+'</div>'+
         '<button type="button" class="fav" data-fav="'+esc(p.id)+'" aria-pressed="'+FAV.has(p.id)+'" aria-label="Palco favorito: '+esc(p.nome)+'">'+ICO.estrela+'</button></div></div>'+
       '<div class="acoes"><button type="button" class="btn" data-quero="'+esc(e.id)+'" aria-pressed="'+QUERO.has(e.id)+'">'+ICO.coracao+'<span>'+(QUERO.has(e.id)?"Na lista":"Quero ver")+'</span></button>'+
@@ -1393,6 +1521,7 @@ function abrir(id){
       '<h3>Sessões <small>'+e._ss.length+' a partir de hoje</small></h3><ul class="sess" id="det-sess"></ul>'+
     '</div></div>';
   pintarSessoes(e);
+  if (!dlg.open) empurrarCamada("det");
   if (typeof dlg.showModal==="function") dlg.showModal(); else dlg.setAttribute("open","");
   var sb=$("#det-sobre"); if (sb && sb.scrollHeight>sb.clientHeight+4) $("#det-ler").hidden=false;
   $("#det-fechar").focus();
@@ -1413,7 +1542,8 @@ function pintarSessoes(e){
   }).join("");
 }
 function fechar(){ var d=$("#det"); if(d.open){ if(d.close) d.close(); else d.removeAttribute("open"); } }
-$("#det").addEventListener("close", function(){ if(ULTIMO_FOCO&&ULTIMO_FOCO.focus) try{ULTIMO_FOCO.focus();}catch(e){} });
+$("#det").addEventListener("close", function(){ fecharCamada("det"); if(ULTIMO_FOCO&&ULTIMO_FOCO.focus) try{ULTIMO_FOCO.focus();}catch(e){} });
+$("#filtros").addEventListener("close", function(){ fecharCamada("filtros"); renderPendente(); });
 $("#det").addEventListener("click", function(ev){
   if (ev.target===this) return fechar();
   var t=ev.target.closest("button"); if(!t) return;
@@ -1439,12 +1569,14 @@ function alternarFav(id){ FAV.has(id)?FAV.delete(id):FAV.add(id); persistir(); r
 
 /* ---------- filtros (gaveta) ---------- */
 function pintarFiltros(){
-  var porG={}; EV.forEach(function(e){ if (passa(e,{grupo:1}) && sessNaJanela(e,F.janela).length) porG[e._grupo]=(porG[e._grupo]||0)+1; });
-  $("#f-grupos").innerHTML=GRUPOS.map(function(g){ var n=porG[g.id]||0, on=F.grupos.has(g.id);
-    return '<button type="button" data-g="'+esc(g.id)+'" aria-pressed="'+on+'" '+attrCor(g.id)+(n||on?"":" disabled")+'>'+esc(g.rotulo)+'<i>'+n+'</i></button>'; }).join("");
+  var fx=faixaVista();
+  var porG={}; EV.forEach(function(e){ if (passa(e,{grupo:1}) && sessNaJanela(e,fx).length) porG[e._grupo]=(porG[e._grupo]||0)+1; });
+  /* G1: gênero sem nada no recorte some da gaveta (a não ser que esteja marcado) */
+  $("#f-grupos").innerHTML=GRUPOS.filter(function(g){ return porG[g.id] || F.grupos.has(g.id); }).map(function(g){ var n=porG[g.id]||0, on=F.grupos.has(g.id);
+    return '<button type="button" data-g="'+esc(g.id)+'" aria-pressed="'+on+'" '+attrCor(g.id)+'>'+esc(g.rotulo)+'<i>'+n+'</i></button>'; }).join("");
   function conta(dim, teste, porSessao){
     var o={}; o[dim]=1;
-    return EV.filter(function(e){ if (!passa(e,o)) return false; var ss=sessNaJanela(e,F.janela,o); return porSessao ? ss.some(teste) : (ss.length && teste(e)); }).length;
+    return EV.filter(function(e){ if (!passa(e,o)) return false; var ss=sessNaJanela(e,fx,o); return porSessao ? ss.some(teste) : (ss.length && teste(e)); }).length;
   }
   function chips(id, itens){
     $(id).innerHTML=itens.map(function(x){ return '<button type="button" data-v="'+esc(x.v)+'" aria-pressed="'+x.on+'"'+(x.n||x.on?"":" disabled")+'>'+esc(x.r)+'<i>'+x.n+'</i></button>'; }).join("");
@@ -1454,14 +1586,18 @@ function pintarFiltros(){
     {v:"30", r:"Até R$ 30", on:F.precoMax===30, n:conta("preco", function(e){ return cabeNoPreco(e,30); })},
     {v:"60", r:"Até R$ 60", on:F.precoMax===60, n:conta("preco", function(e){ return cabeNoPreco(e,60); })}]);
   chips("#f-zona", ZONAS.map(function(z){ return {v:z, r:z, on:F.zona.has(z), n:conta("zona", function(e){ return e._palco._zona===z; })}; }));
-  chips("#f-circ", [["comercial","Comercial"],["independente","Independente"],["publico","Público (Sesc e prefeitura)"]].map(function(c){
-    return {v:c[0], r:c[1], on:F.circ.has(c[0]), n:conta("circ", function(e){ return e._palco._circ===c[0]; })}; }));
+  chips("#f-circ", CIRC_ORDEM.map(function(c){
+    return {v:c, r:CIRC_ROT[c], on:F.circ.has(c), n:conta("circ", function(e){ return e._palco._circ===c; })}; }).filter(function(x){ return x.n || x.on; }));
   $("#f-palco").value=F.palco; $("#f-bairro").value=F.bairro; $("#f-gratis").checked=F.gratis;
-  var n=EV.filter(function(e){ return passa(e) && sessNaJanela(e,F.janela).length; }).length;
+  var n=EV.filter(function(e){ return passa(e) && sessNaJanela(e,fx).length; }).length;
   $("#f-ver").textContent="Ver "+n+(n===1?" evento":" eventos");
 }
-function abrirFiltros(){ pintarFiltros(); var d=$("#filtros"); if (d.showModal) d.showModal(); else d.setAttribute("open",""); }
-function fecharFiltros(){ var d=$("#filtros"); if (d.open){ if(d.close) d.close(); else d.removeAttribute("open"); } }
+function abrirFiltros(){ pintarFiltros(); var d=$("#filtros"); if (!d.open) empurrarCamada("filtros"); if (d.showModal) d.showModal(); else d.setAttribute("open",""); }
+function fecharFiltros(){ renderPendente(); var d=$("#filtros"); if (d.open){ if(d.close) d.close(); else d.removeAttribute("open"); } }
+/* M7: no toque de chip a gaveta responde na hora; a tela de trás é refeita logo depois (ou ao fechar a gaveta) */
+var T_RENDER=null;
+function agendarRender(){ clearTimeout(T_RENDER); T_RENDER=setTimeout(function(){ T_RENDER=null; render(); }, 150); }
+function renderPendente(){ if (T_RENDER){ clearTimeout(T_RENDER); T_RENDER=null; render(); } }
 function limparFiltros(){ F.grupos.clear(); F.palco=""; F.bairro=""; F.gratis=false; F.precoMax=0; F.circ.clear(); F.zona.clear(); F.per.clear(); LIMITE=48; }
 /* chips de Período, Preço, Zona e Circuito da gaveta; preço é escolha única (grátis, até 30, até 60) */
 function tocarChip(dim, v){
@@ -1472,17 +1608,53 @@ function tocarChip(dim, v){
   LIMITE=48;
 }
 
+/* ---------- histórico: Voltar do Android fecha folha e gaveta e volta de aba (M4); aba no endereço (m6) ---------- */
+var VISTAS={cartaz:1, prog:1, cinema:1, arte:1, palcos:1, voce:1}, POP=false;
+function urlDe(v){ return location.pathname+location.search+(v&&v!=="cartaz"?"#"+v:""); }
+function empurrarCamada(nome){ try{ if (history.state && history.state.camada===nome) return; history.pushState({aba:VISTA, camada:nome}, "", urlDe(VISTA)); }catch(e){} }
+function fecharCamada(nome){ try{ if (!POP && history.state && history.state.camada===nome) history.back(); }catch(e){} }
+(function(){ var h=location.hash.slice(1); if (VISTAS[h]) VISTA=h; try{ history.replaceState({aba:VISTA}, "", urlDe(VISTA)); }catch(e){} })();
+window.addEventListener("popstate", function(ev){
+  var st=ev.state||{}; POP=true;
+  try{
+    if ($("#det").open && st.camada!=="det") fechar();
+    if ($("#filtros").open && st.camada!=="filtros") fecharFiltros();
+    var v=st.aba || (VISTAS[location.hash.slice(1)] ? location.hash.slice(1) : "cartaz");
+    if (G && v!==VISTA){ VISTA=v; LIMITE=48; ALIM=48; render(); window.scrollTo(0,0); }
+  } finally { POP=false; }
+});
+
 /* ---------- ligações ---------- */
-function contarAbas(){ var n=sessoesAgenda().length+QUERO.size, b=$("#n-voce"); b.hidden=!n; b.textContent=n; }
+function contarAbas(){ var n=sessoesAgenda().length+agendaSumida().length+QUERO.size, b=$("#n-voce"); b.hidden=!n; b.textContent=n; }
+/* G1: saúde de TODAS as fontes (guia, teatro, exposições, cinema); "suspeita" (ok mas vazia há dias) em âmbar, falha em vermelho */
+function estadoFonte(f){ f=f||{}; return f.status==="suspeita" ? "susp" : (f.ok===false || f.status==="falha") ? "mal" : "ok"; }
+function numerosFonte(f){
+  if (f.exposicoes!=null) return f.exposicoes+(f.exposicoes===1?" exposição":" exposições");
+  if (f.cinemas!=null) return f.cinemas+(f.cinemas===1?" sala, ":" salas, ")+(f.sessoes||0)+" sessões";
+  return (f.eventos||0)+" eventos, "+(f.sessoes||0)+" sessões";
+}
+function gruposDeFontes(){
+  var cin=null;
+  if (CIN){ cin={}; if (CIN.fonte) cin[CIN.fonte.nome||"ingresso"]=CIN.fonte; Object.keys(CIN.fontes_extra||{}).forEach(function(k){ cin[k]=CIN.fontes_extra[k]; }); }
+  return [["Palcos do guia", G.fontes||{}], ["Teatros", G.__fontesTea||null], ["Exposições", ARTE_DADOS ? (ARTE_DADOS.fontes||{}) : null], ["Cinema", cin]];
+}
 function rodape(){
+  if (!G) return;
   var g=G.gerado_em||""; var dt=g.slice(0,10);
-  var fontes=G.fontes||{}, ks=Object.keys(fontes), ok=ks.filter(function(k){return fontes[k]&&fontes[k].ok;}).length;
   var velho = dt && difDias(dt,HOJE)>1;
   $("#r-data").innerHTML="dados de "+(dt?esc(rotDia(dt))+(g.length>12?", "+esc(hora(g)):""):"data desconhecida")+(velho?' <strong style="color:var(--aviso)">(desatualizado)</strong>':"")+(G.__url.indexOf("mock")>=0||G.__url.indexOf("exemplo")>=0?" · amostra":"");
-  $("#r-fontes").innerHTML='<span class="ponto'+(ok<ks.length?" mal":"")+'"></span>'+ok+" de "+ks.length+" fontes ok";
-  $("#saude").innerHTML=ks.map(function(k){ var f=fontes[k]||{}; return '<li><span class="ponto'+(f.ok?"":" mal")+'"></span><b>'+esc(k)+'</b> · '+(f.ok?(f.eventos||0)+" eventos, "+(f.sessoes||0)+" sessões":esc(f.erro||"falhou"))+'</li>'; }).join("");
+  var tot=0, ok=0, susp=0, mal=0, html="";
+  gruposDeFontes().forEach(function(gr){
+    html+='<li class="grupo">'+esc(gr[0])+'</li>';
+    if (!gr[1]){ html+='<li class="longe">'+(gr[0]==="Teatros"?"sem arquivo de teatros":"carrega ao abrir a aba")+'</li>'; return; }
+    var ks=Object.keys(gr[1]); if (!ks.length) html+='<li class="longe">nenhuma fonte</li>';
+    ks.forEach(function(k){ var f=gr[1][k]||{}, st=estadoFonte(f); tot++; if (st==="ok") ok++; else if (st==="susp") susp++; else mal++;
+      html+='<li'+(st==="susp"?' class="susp"':"")+'><span class="ponto'+(st==="ok"?"":" "+st)+'"></span><b>'+esc(k)+'</b> · '+(st==="ok"?esc(numerosFonte(f)):st==="susp"?"suspeita: "+esc(f.erro||"vazia há dias"):esc(f.erro||"falhou"))+'</li>'; });
+  });
+  $("#r-fontes").innerHTML='<span class="ponto'+(mal?" mal":susp?" susp":"")+'"></span>'+ok+" de "+tot+" fontes ok"+(susp?" · "+susp+(susp===1?" suspeita":" suspeitas"):"");
+  $("#saude").innerHTML=html;
 }
-function irVista(v){ VISTA=v; LIMITE=48; ALIM=48; render(); window.scrollTo(0,0); }
+function irVista(v){ if (v!==VISTA){ try{ history.pushState({aba:v}, "", urlDe(v)); }catch(e){} } VISTA=v; LIMITE=48; ALIM=48; render(); window.scrollTo(0,0); }
 function abrirBusca(){ var b=$("#busca"); b.hidden=false; $("#b-busca").setAttribute("aria-pressed","true"); var q=$("#q"); q.focus(); q.select(); }
 function fecharBusca(){ $("#busca").hidden=true; $("#b-busca").setAttribute("aria-pressed","false"); if (F.q){ F.q=""; $("#q").value=""; render(); } }
 function ligar(){
@@ -1496,13 +1668,13 @@ function ligar(){
   $("#b-filtros").addEventListener("click", abrirFiltros);
   $("#f-fechar").addEventListener("click", fecharFiltros);
   $("#filtros").addEventListener("click", function(ev){ if (ev.target===this) fecharFiltros(); });
-  $("#f-grupos").addEventListener("click", function(ev){ var b=ev.target.closest("button"); if(!b||b.disabled) return; var g=b.dataset.g; F.grupos.has(g)?F.grupos.delete(g):F.grupos.add(g); render(); pintarFiltros(); });
-  $("#f-palco").addEventListener("change", function(){ F.palco=this.value; render(); pintarFiltros(); });
-  $("#f-bairro").addEventListener("change", function(){ F.bairro=this.value; render(); pintarFiltros(); });
-  $("#f-gratis").addEventListener("change", function(){ F.gratis=this.checked; if (F.gratis) F.precoMax=0; render(); pintarFiltros(); });
-  ["#f-per","#f-preco","#f-zona","#f-circ"].forEach(function(id){ $(id).addEventListener("click", function(ev){ var b=ev.target.closest("button"); if(!b||b.disabled) return; tocarChip(this.dataset.dim, b.dataset.v); render(); pintarFiltros(); }); });
+  $("#f-grupos").addEventListener("click", function(ev){ var b=ev.target.closest("button"); if(!b||b.disabled) return; var g=b.dataset.g; F.grupos.has(g)?F.grupos.delete(g):F.grupos.add(g); LIMITE=48; pintarFiltros(); agendarRender(); });
+  $("#f-palco").addEventListener("change", function(){ F.palco=this.value; pintarFiltros(); agendarRender(); });
+  $("#f-bairro").addEventListener("change", function(){ F.bairro=this.value; pintarFiltros(); agendarRender(); });
+  $("#f-gratis").addEventListener("change", function(){ F.gratis=this.checked; if (F.gratis) F.precoMax=0; pintarFiltros(); agendarRender(); });
+  ["#f-per","#f-preco","#f-zona","#f-circ"].forEach(function(id){ $(id).addEventListener("click", function(ev){ var b=ev.target.closest("button"); if(!b||b.disabled) return; var dim=this.dataset.dim, v=b.dataset.v; tocarChip(dim, v); pintarFiltros(); var nb=$('#f-'+dim+' button[data-v="'+CSS.escape(v)+'"]'); if (nb) nb.focus(); agendarRender(); }); });
   $("#b-voce").addEventListener("click", function(){ irVista("voce"); });
-  $("#f-limpar").addEventListener("click", function(){ limparFiltros(); render(); pintarFiltros(); });
+  $("#f-limpar").addEventListener("click", function(){ limparFiltros(); pintarFiltros(); agendarRender(); });
   $("#f-ver").addEventListener("click", function(){ fecharFiltros(); if (VISTA==="voce") irVista("cartaz"); });
   $("#painel").addEventListener("click", function(ev){
     var b=ev.target.closest("button"); if(!b) return;
@@ -1540,6 +1712,7 @@ function ligar(){
     if (b.id==="mais-prog"){ LIM_PROG+=160; render(); }
     if (b.id==="ver-tudo"){ F.janela="tudo"; LIMITE=48; render(); }
     if (b.id==="limpar"){ limparFiltros(); render(); }
+    if (b.id==="ag-sumidas"){ agendaSumida().forEach(function(id){ AGENDA.delete(id); }); persistir(); render(); }
   });
   $("#r-fontes").addEventListener("click", function(){ var on=$("#saude").classList.toggle("on"); this.setAttribute("aria-expanded",String(on)); });
   document.addEventListener("keydown", function(ev){

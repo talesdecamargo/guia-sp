@@ -1,5 +1,6 @@
 {
- "_leia": "Circuitos do cinema, editaveis. Arte = SO as salas da lista 'arte' (id do cinema.json ou nome exato da sala). Publico = rede da lista 'redes_publicas' (Spcine) ou sala com 'CEU' no nome. Comercial = rede da lista 'redes_comerciais'. Sala fora de tudo fica sem circuito (sem selo), nunca 'arte' por omissao. Ids/nomes em 'comercial' e 'publico' vencem a regra da rede. Para mudar uma sala de lado, mova o nome dela de uma lista para outra.",
+ "_leia": "Circuitos do cinema, editaveis. Arte = SO as salas da lista 'arte' (id do cinema.json ou nome exato da sala). Publico = rede da lista 'redes_publicas' (Spcine) ou sala com 'CEU' no nome. Comercial = rede da lista 'redes_comerciais'. Sala fora de tudo fica sem circuito (sem selo), nunca 'arte' por omissao. Ids/nomes em 'comercial' e 'publico' vencem a regra da rede. Para mudar uma sala de lado, mova o nome dela de uma lista para outra. Selo ARTE (G4, 20/11/2026): e do FILME, nao da sala; leva o filme com sessao em ao menos uma sala da lista 'arte' E em menos de 'selo_arte.max_cinemas_comerciais' cinemas de rede comercial na semana (lancamento amplo nao leva, mesmo passando numa sala de arte). Spcine/CEU nao da o selo.",
+ "selo_arte": {"max_cinemas_comerciais": 3},
  "cinema": {
   "arte": [
    "Cinema Belas Artes",

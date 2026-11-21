@@ -233,7 +233,7 @@ details.diatodo .linhas{padding:0 12px}
 /* ---------- cinema ---------- */
 .cine-bar{display:flex;gap:6px;margin:10px -16px 0;padding:0 16px 2px;overflow-x:auto;scrollbar-width:none}
 .cine-bar::-webkit-scrollbar{display:none}
-.cine-bar button{flex:none;min-height:44px}
+.cine-bar button{flex:none;min-height:44px;min-width:44px}
 .cine-bar button{border:2px solid var(--tinta);background:var(--papel);padding:7px 10px 6px;font:700 .74rem/1 var(--cond);letter-spacing:.08em;text-transform:uppercase}
 .cine-bar button[aria-pressed="true"]{background:var(--tinta);color:var(--bg)}
 .cine-bar .dir{margin-left:auto}
@@ -260,7 +260,8 @@ details.diatodo .linhas{padding:0 12px}
 .sala h3{margin:0;font:400 1.7rem/.95 var(--disp);text-transform:uppercase}
 .sala .end{font-size:.82rem;color:var(--mudo);margin:4px 0 8px}
 .sala .fl{display:grid;grid-template-columns:44px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--fio);align-items:start}
-.sala .fl button{border:0;background:none;padding:0;text-align:left;min-height:44px}
+.sala .fl button{border:0;background:none;padding:0;text-align:left;min-height:44px;min-width:44px}
+.sala .fl div>button{display:block;width:100%}
 .sala .fl .mini-p{display:block;width:44px;aspect-ratio:2/3;background:var(--cc,#444);overflow:hidden;border:1.5px solid var(--tinta)}
 .sala .fl .mini-p img{width:100%;height:100%;object-fit:cover;display:block}
 .sala .fl b{display:block;font:700 .92rem/1.2 var(--txt)}
@@ -280,7 +281,7 @@ span.hr{border-style:dashed;color:var(--mudo)}
 .fdias button[aria-pressed="true"]{background:var(--tinta);color:var(--bg)}
 .fdias button:disabled{opacity:.3}
 .fsalas{list-style:none;margin:0;padding:0 16px 24px}
-.fsalas li{padding:11px 0;border-bottom:1px solid var(--fio)}
+.fsalas li{padding:11px 0;border-bottom:1px solid var(--fio);content-visibility:auto;contain-intrinsic-size:auto 150px}
 .fsalas li b{display:block;font:700 .98rem/1.2 var(--txt)}
 .fsalas li span.end{font-size:.8rem;color:var(--mudo)}
 
@@ -561,6 +562,9 @@ function rotDia(d){ var a=d.split("-"); return SEM[diaSem(d)]+" "+(+a[2])+" "+ME
 function rotDiaLongo(d){ var a=d.split("-"); return SEMX[diaSem(d)]+", "+(+a[2]); }
 function dm(d){ var a=d.split("-"); return (+a[2])+"/"+(+a[1]); }
 function relDia(d){ var n=difDias(HOJE,d); return n===0?"hoje":n===1?"amanhã":""; }
+/* R3: plural num lugar só ("1 evento", "2 eventos") */
+function plw(n, um, varios){ return +n===1 ? um : varios; }   /* só a palavra (o número vai em outro elemento) */
+function pl(n, um, varios){ n=+n||0; return n+" "+plw(n, um, varios); }
 function hora(iso){ return iso.slice(11,16).replace(":00","h").replace(":","h"); }
 /* hora_conhecida:false => o coletor só sabia o dia; nunca mostrar 00h. Ausência do campo = conhecida (dados antigos). */
 function horaConhecida(s){ return s.hora_conhecida!==false; }
@@ -820,8 +824,8 @@ function quandoTxt(e, ss){
   ss = ss || e._ss;
   var a=ss[0], b=ss[ss.length-1], da=a.inicio.slice(0,10), db=b.inicio.slice(0,10), t=temporadaTxt(e), r;
   if (ss.length===1) r=rotDia(da)+" · "+horaS(a);
-  else if (da===db) r=rotDia(da)+" · "+ss.length+" sessões";
-  else r=dm(da)+" a "+dm(db)+" · "+ss.length+" sessões";
+  else if (da===db) r=rotDia(da)+" · "+pl(ss.length,"sessão","sessões");
+  else r=dm(da)+" a "+dm(db)+" · "+pl(ss.length,"sessão","sessões");
   return t ? r+" · "+t : r;
 }
 function cartaz(e, ss){
@@ -856,7 +860,7 @@ function renderCartaz(){
     var j=b.dataset.j, n=EV.filter(function(e){ return passa(e) && sessNaJanela(e,j).length; }).length;
     if (j!=="datas") b.querySelector("b").textContent=n; else b.querySelector("b").textContent = F.janela==="datas" ? n : "···";
     b.setAttribute("aria-pressed", String(j===F.janela));
-    b.setAttribute("aria-label", b.querySelector("span").textContent+": "+n+" eventos");
+    b.setAttribute("aria-label", b.querySelector("span").textContent+": "+pl(n,"evento","eventos"));
   });
   $("#datas").classList.toggle("on", F.janela==="datas");
   var lista = listaJanela();
@@ -864,13 +868,13 @@ function renderCartaz(){
   if (!lista.length){
     var nTudo = F.janela==="tudo" ? 0 : EV.filter(function(e){ return passa(e) && sessNaJanela(e,"tudo").length; }).length;
     html += '<div class="vazio"><b>Nada por aqui</b>'+(F.q?'Nada com “'+esc(F.q)+'” '+esc(rotJanela())+'.':'Tente outro período ou limpe os filtros.')+
-      (nTudo?'<button type="button" class="mais" id="ver-tudo">ver em Tudo ('+nTudo+(nTudo===1?" evento":" eventos")+')</button>':"")+'</div>';
+      (nTudo?'<button type="button" class="mais" id="ver-tudo">ver em Tudo ('+pl(nTudo,"evento","eventos")+')</button>':"")+'</div>';
     $("#painel").innerHTML=html; pintarMuro(); return;
   }
   lista.sort(cmpEv);
   var focado = F.grupos.size || F.q.trim() || F.palco || F.bairro || F.precoMax || F.circ.size || F.zona.size || F.per.size;
   if (focado){
-    html += '<div class="heroi"><span class="num" id="h-num">'+lista.length+'</span><span class="rot">'+(lista.length===1?"evento":"eventos")+' <em>'+esc(rotJanela())+'</em></span></div><div class="grade">';
+    html += '<div class="heroi"><span class="num" id="h-num">'+lista.length+'</span><span class="rot">'+plw(lista.length,"evento","eventos")+' <em>'+esc(rotJanela())+'</em></span></div><div class="grade">';
     lista.slice(0,LIMITE).forEach(function(x){ html+=cartaz(x.e, x.ss); });
     html += '</div>';
     if (lista.length>LIMITE) html+='<button type="button" class="mais" id="mais">Mostrar mais '+(lista.length-LIMITE)+'</button>';
@@ -947,48 +951,61 @@ function squarify(itens, x, y, w, h){
   return out;
 }
 function GRUPO_EXISTE(id){ for (var i=0;i<GRUPOS.length;i++) if (GRUPOS[i].id===id) return true; return false; }
-/* exposições abertas em algum dia da janela (null enquanto o arte.json não chegou) */
-function contarArteJanela(){
+/* R2: UMA regra de contagem de exposições para muro, gaveta e aba: exposição (arte.json + guia, sem repetir) aberta
+   em algum dia do recorte [r0, r1]. null enquanto o arte.json não chegou. */
+function expoNoRecorte(r){
   if (!ARTE_DADOS) return null;
-  var r=intervalo(F.janela);
-  return listaArte().filter(function(x){ return (!x.de || x.de<=r[1]) && (!x.ate || x.ate>=r[0]); }).length;
+  return listaArte().filter(function(x){ return (!x.de || x.de<=r[1]) && (!x.ate || x.ate>=r[0]); });
 }
-/* filmes com sessão ainda por começar na janela (null enquanto o cinema.json não chegou) */
-function contarFilmesJanela(){
+function contarExposicoes(r){ var l=expoNoRecorte(r); return l ? l.length : null; }
+/* filmes com sessão ainda por começar no recorte (null enquanto o cinema.json não chegou) */
+function contarFilmes(r){
   if (!CIN) return null;
-  var r=intervalo(F.janela), fs={};
+  var fs={};
   Object.keys(CIN._porDia).forEach(function(d){ if (d<r[0]||d>r[1]) return; CIN._porDia[d].forEach(function(s){ if (d!==HOJE || s.i>=AGORA) fs[s.f]=1; }); });
   return Object.keys(fs).length;
 }
+/* contagem por gênero num recorte de datas, a MESMA no muro e na gaveta (R2). M6: sem filtro, exposições
+   (arte.json + guia) e filmes contam a oferta inteira do app e viram portal para a aba deles em vez de filtrar */
+function contarGrupos(r){
+  var porG={}, portal={};
+  EV.forEach(function(e){ if (passa(e,{grupo:1}) && sessNaJanela(e,r).length) porG[e._grupo]=(porG[e._grupo]||0)+1; });
+  if (!nFiltros() && !F.q.trim()){
+    var nA=contarExposicoes(r), nC=contarFilmes(r);
+    if (nA!=null && GRUPO_EXISTE("exposicao")){ porG.exposicao=nA; portal.exposicao="arte"; }
+    if (nC!=null && GRUPO_EXISTE("cinema")){ porG.cinema=nC; portal.cinema="cinema"; }
+  }
+  return {n:porG, portal:portal};
+}
 function pintarMuro(){
   var muro=$("#muro"); if(!muro) return;
-  var porG={}; EV.forEach(function(e){ if (passa(e,{grupo:1}) && sessNaJanela(e,F.janela).length) porG[e._grupo]=(porG[e._grupo]||0)+1; });
-  /* M6: sem filtro, o muro mostra as duas maiores ofertas do app: exposições (arte.json + guia) e filmes em cartaz na janela;
-     esses dois cartazes levam à aba deles em vez de filtrar */
-  var PORTAL={};
-  if (!nFiltros() && !F.q.trim()){
-    var nA=contarArteJanela(), nC=contarFilmesJanela();
-    if (nA!=null && GRUPO_EXISTE("exposicao")){ porG.exposicao=nA; PORTAL.exposicao="arte"; }
-    if (nC!=null && GRUPO_EXISTE("cinema")){ porG.cinema=nC; PORTAL.cinema="cinema"; }
-  }
+  var cg=contarGrupos(intervalo(F.janela)), porG=cg.n, PORTAL=cg.portal;
   var com=GRUPOS.filter(function(g){ return porG[g.id]||F.grupos.has(g.id); }), sem=GRUPOS.filter(function(g){ return !porG[g.id] && !F.grupos.has(g.id); });
   var W=muro.clientWidth||340, H=Math.round(Math.min(Math.max(W*0.72, 230), 360));
   muro.style.height=H+"px";
   var tot=com.reduce(function(a,g){ return a+(porG[g.id]||0); },0)||1, piso=tot*0.07;
   /* espetáculo primeiro (abre o muro no canto de cima), palestra/exposição/cinema depois; dentro de cada metade, o maior primeiro */
   var FIM={palavra:1, exposicao:1, cinema:1, outros:1};
-  var itens=com.map(function(g){ return {it:g, v:Math.max(porG[g.id]||0, piso), fim:FIM[g.id]?1:0}; }).sort(function(a,b){ return a.fim-b.fim || b.v-a.v; });
-  var sv=itens.reduce(function(a,i){ return a+i.v; },0)||1;
-  itens.forEach(function(i){ i.a=i.v/sv*W*H; });
-  var GAP=3, maior=itens.length?itens[0].it.id:"";
+  var GAP=3, ALVO_MIN=44, itens, caixas;
+  /* M9: todo cartaz do muro é um alvo de toque de pelo menos 44x44; se o desenho deixa um mais fino, o piso de área
+     sobe até nenhum ficar abaixo (no limite, todos do mesmo tamanho) */
+  for (var tent=0; tent<14; tent++){
+    itens=com.map(function(g){ return {it:g, v:Math.max(porG[g.id]||0, piso), fim:FIM[g.id]?1:0}; }).sort(function(a,b){ return a.fim-b.fim || b.v-a.v; });
+    var sv=itens.reduce(function(a,i){ return a+i.v; },0)||1;
+    itens.forEach(function(i){ i.a=i.v/sv*W*H; });
+    caixas=squarify(itens,0,0,W,H);
+    if (caixas.every(function(r){ return r.w-GAP>=ALVO_MIN && r.h-GAP>=ALVO_MIN; })) break;
+    piso*=1.6;
+  }
+  var maior=itens.length?itens[0].it.id:"";
   muro.classList.toggle("filtrando", F.grupos.size>0);
-  muro.innerHTML = squarify(itens,0,0,W,H).map(function(r){
+  muro.innerHTML = caixas.map(function(r){
     var g=r.it, n=porG[g.id]||0, area=r.w*r.h, curto=Math.min(r.w,r.h);
     var fs=Math.max(15, Math.min(curto*0.42, Math.sqrt(area)*0.3, 76));
     var rot=g.rotulo; if (fs*rot.length*0.36 > r.w-14) fs=Math.max(13, (r.w-14)/(rot.length*0.36));
     var on=F.grupos.has(g.id), pv=PORTAL[g.id];
-    var alvo = pv ? 'data-irvista="'+pv+'" data-portal="'+esc(g.id)+'" aria-label="'+esc(rot)+': '+n+(g.id==="cinema"?(n===1?" filme":" filmes"):(n===1?" exposição":" exposições"))+', abre a aba" '
-                  : 'data-g="'+esc(g.id)+'" aria-pressed="'+on+'" aria-label="'+esc(rot)+': '+n+' eventos" ';
+    var alvo = pv ? 'data-irvista="'+pv+'" data-portal="'+esc(g.id)+'" aria-label="'+esc(rot)+': '+(g.id==="cinema"?pl(n,"filme","filmes"):pl(n,"exposição","exposições"))+', abre a aba" '
+                  : 'data-g="'+esc(g.id)+'" aria-pressed="'+on+'" aria-label="'+esc(rot)+': '+pl(n,"evento","eventos")+'" ';
     return '<button type="button" class="lambe'+(g.id===maior&&area>20000?" dobra":"")+'" '+alvo+attrCor(g.id).replace('style="','style="left:'+(r.x+GAP/2).toFixed(1)+'px;top:'+(r.y+GAP/2).toFixed(1)+'px;width:'+Math.max(0,r.w-GAP).toFixed(1)+'px;height:'+Math.max(0,r.h-GAP).toFixed(1)+'px;--fs:'+fs.toFixed(0)+'px;--fn:'+Math.max(12,Math.min(fs*0.42,22)).toFixed(0)+'px;--reg:'+(fs>40?3:fs>24?2:0)+'px;')+'>'+
       '<span class="nn">'+n+'</span><span class="nm">'+esc(rot)+'</span></button>';
   }).join("");
@@ -1028,7 +1045,7 @@ function renderProg(){
   var strip='<div class="dias" role="group" aria-label="Dia"><button type="button" class="fil" id="b-filtros-prog" aria-haspopup="dialog" aria-label="Filtros'+(nf?": "+nf+" ativos":"")+'">'+ICO.filtro+(nf?'<span class="bolinha">'+nf+'</span>':"")+'</button>'+
     '<button type="button" class="todos" data-dia="" aria-pressed="'+(!DIA_PROG)+'">Todos</button>';
   for (var i=0;i<=29;i++){ var d=somaDias(HOJE,i), a=d.split("-");
-    strip+='<button type="button" data-dia="'+d+'" aria-pressed="'+(DIA_PROG===d)+'" class="'+(i===0?"hoje":"")+'"'+(dias[d]?"":" disabled")+' aria-label="'+esc(rotDia(d))+': '+(dias[d]||0)+' sessões"><span>'+SEM[diaSem(d)]+'</span><b>'+(+a[2])+'</b><i>'+MES[+a[1]-1]+'</i></button>'; }
+    strip+='<button type="button" data-dia="'+d+'" aria-pressed="'+(DIA_PROG===d)+'" class="'+(i===0?"hoje":"")+'"'+(dias[d]?"":" disabled")+' aria-label="'+esc(rotDia(d))+': '+pl(dias[d]||0,"sessão","sessões")+'"><span>'+SEM[diaSem(d)]+'</span><b>'+(+a[2])+'</b><i>'+MES[+a[1]-1]+'</i></button>'; }
   strip+='</div>';
   if (nf) strip+='<div class="muro-rodape ativos-linha"><span class="ativos">'+esc(rotAtivos().join(" + "))+' · <button type="button" id="limpar">limpar</button></span></div>';
   var sel = todas.filter(function(x){ var d=x.s.inicio.slice(0,10); return DIA_PROG ? d===DIA_PROG : d<=ate; });
@@ -1040,7 +1057,7 @@ function renderProg(){
   Object.keys(porDia).sort().some(function(d){
     var l=porDia[d], comHora=l.filter(function(x){ return horaConhecida(x.s) && x.e.genero!=="exposicao"; }),
       semH=l.filter(function(x){ return !horaConhecida(x.s) && x.e.genero!=="exposicao"; }), expo=l.filter(function(x){ return x.e.genero==="exposicao"; });
-    html+='<section class="dia" aria-label="'+esc(rotDia(d))+'"><div class="dia-cab"><h2>'+esc(rotDiaLongo(d))+'</h2>'+(relDia(d)?'<span class="rel">'+relDia(d)+'</span>':"")+'<span class="q">'+l.length+(l.length===1?" sessão":" sessões")+'</span></div>';
+    html+='<section class="dia" aria-label="'+esc(rotDia(d))+'"><div class="dia-cab"><h2>'+esc(rotDiaLongo(d))+'</h2>'+(relDia(d)?'<span class="rel">'+relDia(d)+'</span>':"")+'<span class="q">'+pl(l.length,"sessão","sessões")+'</span></div>';
     var per=null;
     comHora.forEach(function(x){
       if (cont>=LIM_PROG) return; var h=+x.s.inicio.slice(11,13), p=h<12?"Manhã":h<18?"Tarde":"Noite";
@@ -1073,6 +1090,7 @@ function carregarCinema(){
     function porHora(a,b){ return a.i<b.i?-1:a.i>b.i?1:0; }
     Object.keys(pd).forEach(function(d){ pd[d].sort(porHora); }); Object.keys(pf).forEach(function(f){ pf[f].sort(porHora); });
     j._porDia=pd; j._porF=pf;
+    seloArte(j);
     CIN=j; if (VISTA==="cinema") render(); else if (VISTA==="cartaz") pintarMuro();
     rodape();
   }).catch(function(e){ CIN_ERRO=true; console.warn(e); if (VISTA==="cinema") render(); });
@@ -1093,6 +1111,19 @@ function circuitoCinema(c){
   if (pub.some(function(r){ return rede===r || n.indexOf(r)>=0; }) || /(^|\s)ceu(\s|$)/.test(norm(c.nome||""))) return "publico";
   var redes = (cfg.redes_comerciais||REDES_COMERCIAIS).map(norm);
   return redes.some(function(r){ return n.indexOf(r)>=0; }) ? "comercial" : null;
+}
+/* G4: o selo ARTE é do FILME, não da sala. Leva o selo o filme que passa em ao menos uma sala de arte (lista "arte" de
+   circuitos.json, que inclui a Cinemateca) E não é lançamento comercial: está em menos de N cinemas de rede comercial na
+   semana (N = circuitos.json "selo_arte.max_cinemas_comerciais", padrão 3). Spcine/CEU (circuito Público) não dá o selo:
+   a programação de lá mistura blockbuster e infantil de rede (medido em 20/11: Galinha Pintadinha em 27 salas). */
+var SELO_ARTE_MAX_COM = 3;
+function seloArte(j){
+  var cfg=(CIRC && CIRC.selo_arte) || {}, max=+cfg.max_cinemas_comerciais>0 ? +cfg.max_cinemas_comerciais : SELO_ARTE_MAX_COM;
+  Object.keys(j.filmes).forEach(function(fid){
+    var arte={}, com={};
+    (j._porF[fid]||[]).forEach(function(s){ var c=j.cinemas[s.c]; if (!c) return; if (c._circ==="arte") arte[s.c]=1; else if (c._circ==="comercial") com[s.c]=1; });
+    j.filmes[fid]._arte = Object.keys(arte).length>0 && Object.keys(com).length<max;
+  });
 }
 function classeCI(c){ c=String(c||"").trim(); if (/^l$|^livre/i.test(c)) return {k:"L",t:"L"}; var m=c.match(/\d+/); return m?{k:"c"+m[0],t:m[0]}:null; }
 function ciHTML(c){ var x=classeCI(c); return x?'<span class="ci '+x.k+'" title="Classificação: '+esc(c)+'">'+x.t+'</span>':""; }
@@ -1141,15 +1172,15 @@ function renderCinema(){
   var porF={}, porC={};
   ss.forEach(function(s){ (porF[s.f]=porF[s.f]||[]).push(s); (porC[s.c]=porC[s.c]||[]).push(s); });
   var fids=Object.keys(porF), cids=Object.keys(porC);
-  html+='<div class="heroi"><span class="num" id="c-num">'+fids.length+'</span><span class="rot">'+(fids.length===1?"filme":"filmes")+' em '+cids.length+' '+(cids.length===1?"cinema":"cinemas")+' <em>'+esc(DIA_CIN===HOJE?"hoje, daqui em diante":rotDia(DIA_CIN))+'</em></span></div>';
+  html+='<div class="heroi"><span class="num" id="c-num">'+fids.length+'</span><span class="rot">'+plw(fids.length,"filme","filmes")+' em '+pl(cids.length,"cinema","cinemas")+' <em>'+esc(DIA_CIN===HOJE?"hoje, daqui em diante":rotDia(DIA_CIN))+'</em></span></div>';
   if (!ss.length){ html+='<div class="vazio"><b>Nenhuma sessão</b>Mude o dia, a zona ou o idioma.</div>'; }
   else if (CSEG==="filmes"){
     fids.sort(function(a,b){ return porF[b].length-porF[a].length || CIN.filmes[a].titulo.localeCompare(CIN.filmes[b].titulo,"pt"); });
     html+='<div class="filmes">'+fids.map(function(fid){
-      var f=CIN.filmes[fid], l=porF[fid], nc={}, na=0; l.forEach(function(s){ nc[s.c]=1; if (CIN.cinemas[s.c]._circ==="arte") na++; }); var n=Object.keys(nc).length;
+      var f=CIN.filmes[fid], l=porF[fid], nc={}; l.forEach(function(s){ nc[s.c]=1; }); var n=Object.keys(nc).length;
       return '<article class="filme"><button type="button" class="abrir" data-filme="'+esc(fid)+'">'+posterHTML(f)+'<h3>'+esc(f.titulo)+'</h3>'+
-        '<span class="meta">'+ciHTML(f.classificacao)+(f.duracao?esc(duracao(f.duracao)):"")+(na*2>l.length?'<span class="arte">arte</span>':"")+'</span>'+
-        '<span class="quando">'+n+(n===1?" cinema":" cinemas")+' · '+hora(l[0].i)+(hora(l[l.length-1].i)!==hora(l[0].i)?" a "+hora(l[l.length-1].i):"")+'</span></button></article>';
+        '<span class="meta">'+ciHTML(f.classificacao)+(f.duracao?esc(duracao(f.duracao)):"")+(f._arte?'<span class="arte">arte</span>':"")+'</span>'+
+        '<span class="quando">'+pl(n,"cinema","cinemas")+' · '+hora(l[0].i)+(hora(l[l.length-1].i)!==hora(l[0].i)?" a "+hora(l[l.length-1].i):"")+'</span></button></article>';
     }).join("")+'</div>';
   } else {
     cids.sort(function(a,b){ return (FAV.has("cin:"+b)-FAV.has("cin:"+a)) || CIN.cinemas[a].nome.localeCompare(CIN.cinemas[b].nome,"pt"); });
@@ -1157,7 +1188,7 @@ function renderCinema(){
       var c=CIN.cinemas[cid], l=porC[cid], pf={}, ordem=[]; l.forEach(function(s){ if(!pf[s.f]){ pf[s.f]=[]; ordem.push(s.f); } pf[s.f].push(s); });
       var aberto=CABERTO.has(cid);
       return '<article class="sala" data-sala="'+esc(cid)+'"><div class="palco-cab"><button type="button" class="sala-abre" data-abre="'+esc(cid)+'" aria-expanded="'+aberto+'"><h3>'+esc(c.nome)+'</h3><div class="end">'+esc([c.rede,c.bairro,c._zona!=="Outras"?c._zona:""].filter(Boolean).join(" · "))+'</div>'+
-        '<div class="resumo">'+ordem.length+(ordem.length===1?" filme":" filmes")+' · '+l.length+' sessões · próxima '+esc(hora(l[0].i))+(aberto?"":' · <u>ver horários</u>')+'</div></button>'+
+        '<div class="resumo">'+pl(ordem.length,"filme","filmes")+' · '+pl(l.length,"sessão","sessões")+' · próxima '+esc(hora(l[0].i))+(aberto?"":' · <u>ver horários</u>')+'</div></button>'+
         '<button type="button" class="fav" data-fav="cin:'+esc(cid)+'" aria-pressed="'+FAV.has("cin:"+cid)+'" aria-label="Cinema favorito: '+esc(c.nome)+'">'+ICO.estrela+'</button></div>'+
         (!aberto?"":mapaLink(c.nome, c.endereco||c.bairro))+
         (!aberto?"":ordem.map(function(fid){ var f=CIN.filmes[fid], u=f._capa?f._capa.f:urlSegura(f.cartaz);
@@ -1186,7 +1217,25 @@ function horaLink(s){
   var tit=esc((s.sala||"")+(s.preco?" · R$ "+(+s.preco).toFixed(2).replace(".",","):""));
   return u?'<a class="hr" href="'+esc(u)+'" target="_blank" rel="noopener" title="'+tit+'">'+r+'</a>':'<span class="hr" title="'+tit+'">'+r+'</span>';
 }
-var FILME_ABERTO=null, FDIA=null;
+var FILME_ABERTO=null, FDIA=null, FOLHA_VEZ=0;
+/* M7: a folha de um filme em cartaz amplo tem ~40 cinemas e ~470 horários; montar tudo de uma vez custava 0,5-1 s
+   (layout) em CPU 4x. A folha abre com os primeiros cinemas (o que cabe na tela) e o resto entra aos lotes, um por
+   quadro, depois da primeira pintura. #f-salas ganha data-completa="1" quando o último lote entra. */
+var FOLHA_LOTE = 6;
+function liSalaFilme(cid, pc){ var c=CIN.cinemas[cid];
+  return '<li><b>'+esc(c.nome)+'</b><span class="end">'+esc([c.bairro,c._zona!=="Outras"?c._zona:""].filter(Boolean).join(" · "))+'</span> '+mapaLink(c.nome, c.endereco||c.bairro)+'<div class="horas">'+pc[cid].map(horaLink).join("")+'</div></li>'; }
+function completarFolha(vez, resto, pc){
+  /* o 1º lote espera a folha ser pintada (dois quadros + folga); os seguintes vêm um por quadro */
+  var primeiro=true, depois = function(f){ var espera=primeiro?120:0; primeiro=false;
+    if (window.requestAnimationFrame) requestAnimationFrame(function(){ setTimeout(f, espera); }); else setTimeout(f, 16+espera); };
+  (function lote(){
+    depois(function(){
+      var ul=$("#f-salas"); if (vez!==FOLHA_VEZ || !ul || !$("#det").open) return;
+      ul.insertAdjacentHTML("beforeend", resto.splice(0, FOLHA_LOTE*2).map(function(cid){ return liSalaFilme(cid, pc); }).join(""));
+      if (resto.length) lote(); else ul.setAttribute("data-completa","1");
+    });
+  })();
+}
 function abrirFilme(fid, dia){
   var f=CIN&&CIN.filmes[fid]; if(!f) return;
   if (!$("#det").open) ULTIMO_FOCO=document.activeElement;
@@ -1209,12 +1258,12 @@ function abrirFilme(fid, dia){
       (f.direcao?'<div class="art" style="margin-top:8px;font-size:.9rem">Direção: '+esc(f.direcao)+'</div>':"")+'</div></div></div>'+
     '<div class="acoes">'+(u?'<a class="btn" href="'+esc(u)+'" target="_blank" rel="noopener">'+ICO.sai+'Ingresso.com</a>':"")+'<button type="button" class="btn" id="det-partilha">'+ICO.partilha+'<span>Enviar</span></button>'+(f.pre_venda?'<span class="pill tbc" style="align-self:center">pré-venda</span>':"")+'</div>'+
     (f.sinopse?'<div class="sobre"><p class="corta" id="det-sobre">'+esc(f.sinopse)+'</p><button type="button" class="lermais" id="det-ler" hidden>Ler mais</button></div>':"")+
-    '<h3>Onde passa <small>'+ordem.length+(ordem.length===1?" cinema":" cinemas")+(filtros?" · "+esc(filtros):"")+'</small></h3>'+
+    '<h3>Onde passa <small>'+pl(ordem.length,"cinema","cinemas")+(filtros?" · "+esc(filtros):"")+'</small></h3>'+
     '<div class="fdias" role="group" aria-label="Dia">'+fd+'</div>'+
-    '<ul class="fsalas" id="f-salas">'+(ordem.length?ordem.map(function(cid){ var c=CIN.cinemas[cid];
-      return '<li><b>'+esc(c.nome)+'</b><span class="end">'+esc([c.bairro,c._zona!=="Outras"?c._zona:""].filter(Boolean).join(" · "))+'</span> '+mapaLink(c.nome, c.endereco||c.bairro)+'<div class="horas">'+pc[cid].map(horaLink).join("")+'</div></li>'; }).join(""):'<li>Sem sessões neste dia com estes filtros.</li>')+'</ul>'+
+    '<ul class="fsalas" id="f-salas"'+(ordem.length>FOLHA_LOTE?'':' data-completa="1"')+'>'+(ordem.length?ordem.slice(0,FOLHA_LOTE).map(function(cid){ return liSalaFilme(cid, pc); }).join(""):'<li>Sem sessões neste dia com estes filtros.</li>')+'</ul>'+
   '</div></div>';
   if (!dlg.open){ empurrarCamada("det"); if (typeof dlg.showModal==="function") dlg.showModal(); else dlg.setAttribute("open",""); }
+  var vez=++FOLHA_VEZ; if (ordem.length>FOLHA_LOTE) completarFolha(vez, ordem.slice(FOLHA_LOTE), pc);
   var sb=$("#det-sobre"); if (sb && sb.scrollHeight>sb.clientHeight+4) $("#det-ler").hidden=false;
   if (!dia) $("#det-fechar").focus();
 }
@@ -1268,7 +1317,11 @@ function distEd(a, b, max){
 }
 function chaveTxt(t){ return norm(t).replace(/[^a-z0-9]+/g,""); }
 /* lista do dia: arte.json (sem as já encerradas) + exposições do guia, sem repetir título + lugar */
+/* a lista só muda com o dia, a coleta do guia ou a chegada do arte.json: muro, gaveta e aba a reaproveitam */
+var LISTA_ARTE=null, LISTA_ARTE_K="";
 function listaArte(){
+  var k=HOJE+"|"+ASSINATURA+"|"+EV.length+"|"+(ARTE_DADOS?(ARTE_DADOS.exposicoes||[]).length:-1);
+  if (LISTA_ARTE && LISTA_ARTE_K===k) return LISTA_ARTE;
   var out=[], porLugar={}; ARTE_IDX={};
   function poe(x){
     var kl=chaveTxt(x.l.nome), kt=chaveTxt(x.titulo), vistos=porLugar[kl]||(porLugar[kl]=[]);
@@ -1293,6 +1346,7 @@ function listaArte(){
     poe({id:"g:"+e.id, ev:e.id, titulo:e.titulo, artista:e.artista||null, l:l, de:d0>HOJE?d0:null, ate:difDias(HOJE,d1)>=45?null:d1, imagem:e.imagem, url:e.url,
       descricao:e.descricao, gratuito:e.gratuito, preco:(e.gratuito===false&&e.preco_min!=null)?"R$ "+Math.round(e.preco_min):null, _capa:e._capa});
   });
+  LISTA_ARTE=out; LISTA_ARTE_K=k;
   return out;
 }
 function passaArte(x, sem){
@@ -1336,7 +1390,7 @@ function barZona(zs){
 }
 function renderArte(){
   if (!ARTE_DADOS){ carregarArte(); $("#painel").innerHTML='<div class="vazio"><b>Carregando</b>as exposições de São Paulo…</div>'; return; }
-  var todas=listaArte(), l=todas.filter(function(x){ return passaArte(x); }).sort(cmpArte);
+  var todas=expoNoRecorte([HOJE,"9999-12-31"]), l=todas.filter(function(x){ return passaArte(x); }).sort(cmpArte);
   var zs={}; todas.forEach(function(x){ if (passaArte(x,{zona:1})) zs[x.l._zona||"Outras"]=1; });
   var html=barTipo()+
     '<div class="cine-bar" role="group" aria-label="Recortes">'+
@@ -1345,7 +1399,7 @@ function renderArte(){
       '<button type="button" data-aquando="termina" aria-pressed="'+(AQUANDO==="termina")+'">Termina em breve</button><button type="button" data-aquando="abre" aria-pressed="'+(AQUANDO==="abre")+'">Abre em breve</button>'+
     '</div>'+barZona(zs);
   var nl={}; l.forEach(function(x){ nl[x.l.id]=1; }); var nlug=Object.keys(nl).length;
-  html+='<div class="heroi"><span class="num" id="a-num">'+l.length+'</span><span class="rot">'+(l.length===1?"exposição":"exposições")+' em '+nlug+' '+(nlug===1?"lugar":"lugares")+(F.q?' <em>com “'+esc(F.q)+'”</em>':"")+'</span></div>';
+  html+='<div class="heroi"><span class="num" id="a-num">'+l.length+'</span><span class="rot">'+plw(l.length,"exposição","exposições")+' em '+pl(nlug,"lugar","lugares")+(F.q?' <em>com “'+esc(F.q)+'”</em>':' <em>em cartaz ou abrindo em breve</em>')+'</span></div>';
   var filtrando = ATIPO||ACIRC||AGRATIS||AQUANDO||AZONA;
   if (!l.length){
     html+='<div class="vazio"><b>Nenhuma exposição</b>'+(ARTE_ERRO&&!todas.length?'Ainda não há dados de exposições. O coletor diário traz.':'Mude o tipo, a zona ou os recortes.')+
@@ -1392,27 +1446,38 @@ function abrirArte(id){
   var sb=$("#det-sobre"); if (sb && sb.scrollHeight>sb.clientHeight+4) $("#det-ler").hidden=false;
   $("#det-fechar").focus();
 }
-/* Lugares → Museus e galerias: lugares do arte.json com exposição aberta hoje */
+/* Lugares → Museus e galerias: lugares do arte.json com exposição aberta hoje + (M10) museus de acervo permanente,
+   mesmo sem exposição temporária (cadastro fixo Resources/museus-fixos.json, ligado pelo coletor_arte.py) */
+function passaLugar(l, sem){
+  sem=sem||{};
+  if (ATIPO && l._tipo!==ATIPO) return false;
+  if (!sem.zona && AZONA && (l._zona||"Outras")!==AZONA) return false;
+  if (F.q){ var b=norm([l.nome,l.bairro,TIPO_ROT[l._tipo],"acervo"].join(" ")), t=norm(F.q).trim().split(/\s+/); for (var i=0;i<t.length;i++) if (b.indexOf(t[i])<0) return false; }
+  return true;
+}
 function renderMuseus(html){
   if (!ARTE_DADOS){ carregarArte(); $("#painel").innerHTML=html+'<div class="vazio"><b>Carregando</b>os museus e galerias…</div>'; return; }
   var todas=listaArte().filter(function(x){ return aberta(x) && x.l.id.indexOf("p:")!==0; });
+  var acervo=Object.keys(ARTE_DADOS.lugares).map(function(k){ return ARTE_DADOS.lugares[k]; }).filter(function(l){ return l.acervo_permanente===true; });
   var zs={}; todas.forEach(function(x){ if (passaArte(x,{lugar:1, zona:1})) zs[x.l._zona||"Outras"]=1; });
+  acervo.forEach(function(l){ if (passaLugar(l,{zona:1})) zs[l._zona||"Outras"]=1; });
   html+=barTipo()+barZona(zs);
   var por={}; todas.forEach(function(x){ if (!passaArte(x,{lugar:1})) return; (por[x.l.id]=por[x.l.id]||{l:x.l, ex:[]}).ex.push(x); });
+  acervo.forEach(function(l){ if (!por[l.id] && passaLugar(l)) por[l.id]={l:l, ex:[]}; });
   var lista=Object.keys(por).map(function(k){ return por[k]; });
   if (!lista.length){ $("#painel").innerHTML=html+'<div class="vazio"><b>Nenhum lugar</b>'+(ARTE_ERRO?'Ainda não há dados de exposições.':'Mude o tipo ou a zona.')+'</div>'; return; }
   lista.forEach(function(x){ x.ex.sort(cmpArte); });
   lista.sort(function(a,b){ return (FAV.has("lug:"+b.l.id)-FAV.has("lug:"+a.l.id)) || b.ex.length-a.ex.length || a.l.nome.localeCompare(b.l.nome,"pt"); });
   var tit=null;
-  html+='<div class="heroi"><span class="num" id="m-num">'+lista.length+'</span><span class="rot">'+(lista.length===1?"lugar":"lugares")+' com exposição aberta</span></div>';
+  html+='<div class="heroi"><span class="num" id="m-num">'+lista.length+'</span><span class="rot">'+plw(lista.length,"lugar","lugares")+' <em>com exposição aberta ou acervo permanente</em></span></div>';
   lista.forEach(function(x){
     var l=x.l, fk="lug:"+l.id, t=FAV.has(fk)?"Seus lugares":"Todos os lugares";
     if (t!==tit){ tit=t; html+='<div class="zona-tit">'+t+'</div>'; }
     html+='<article class="palco lugar" data-lugar="'+esc(l.id)+'"><div class="palco-cab"><div><h3>'+esc(l.nome)+'</h3><div class="end">'+esc([TIPO_ROT[l._tipo], l.bairro, l._zona].filter(Boolean).join(" · "))+'</div></div>'+
       '<button type="button" class="fav" data-fav="'+esc(fk)+'" aria-pressed="'+FAV.has(fk)+'" aria-label="Lugar favorito: '+esc(l.nome)+'">'+ICO.estrela+'</button></div>'+
-      '<div class="resumo">'+x.ex.length+(x.ex.length===1?" exposição aberta":" exposições abertas")+(l._circ==="independente"?'<span class="pill">independente</span>':"")+'</div>'+
+      '<div class="resumo">'+[x.ex.length?pl(x.ex.length,"exposição aberta","exposições abertas"):"", l.acervo_permanente===true?"acervo permanente":""].filter(Boolean).join(" · ")+(l._circ==="independente"?'<span class="pill">independente</span>':"")+'</div>'+
       (l.horario||l.gratis?'<div class="lug">'+(l.horario?'<span>'+esc(l.horario)+'</span>':"")+(l.gratis?'<span style="color:var(--ok)">Grátis: '+esc(l.gratis)+'</span>':"")+'</div>':"")+
-      '<div class="mini">'+x.ex.slice(0,14).map(function(e){ return '<button type="button" data-arte="'+esc(e.id)+'" '+attrCor("exposicao")+'>'+capaArte(e,"mini",true)+'<b>'+esc(e.titulo)+'</b><i>'+esc(quandoArte(e))+'</i></button>'; }).join("")+'</div>'+
+      (x.ex.length?'<div class="mini">'+x.ex.slice(0,14).map(function(e){ return '<button type="button" data-arte="'+esc(e.id)+'" '+attrCor("exposicao")+'>'+capaArte(e,"mini",true)+'<b>'+esc(e.titulo)+'</b><i>'+esc(quandoArte(e))+'</i></button>'; }).join("")+'</div>':"")+
       mapaLink(l.nome, l.endereco||l.bairro)+'</article>';
   });
   $("#painel").innerHTML=html;
@@ -1431,8 +1496,8 @@ function renderPalcos(){
   var lista=Object.keys(por).map(function(k){ return por[k]; });
   var nz={}; lista.forEach(function(x){ var z=x.p._zona||"Outras"; nz[z]=(nz[z]||0)+1; });
   var zs=ZONAS.slice(); if (nz.Outras) zs.push("Outras");
-  var html=topo+'<div class="zonas" role="group" aria-label="Zona"><button type="button" data-zona="" aria-pressed="'+(!ZONA)+'"><b>Todas</b><span>'+lista.length+' palcos</span></button>'+
-    zs.map(function(z){ return '<button type="button" data-zona="'+esc(z)+'" aria-pressed="'+(ZONA===z)+'"'+(nz[z]?"":" disabled")+'><b>'+esc(z)+'</b><span>'+(nz[z]||0)+' palcos</span></button>'; }).join("")+'</div>';
+  var html=topo+'<div class="zonas" role="group" aria-label="Zona"><button type="button" data-zona="" aria-pressed="'+(!ZONA)+'"><b>Todas</b><span>'+pl(lista.length,"palco","palcos")+'</span></button>'+
+    zs.map(function(z){ return '<button type="button" data-zona="'+esc(z)+'" aria-pressed="'+(ZONA===z)+'"'+(nz[z]?"":" disabled")+'><b>'+esc(z)+'</b><span>'+pl(nz[z]||0,"palco","palcos")+'</span></button>'; }).join("")+'</div>';
   lista = lista.filter(function(x){ return !ZONA || (x.p._zona||"Outras")===ZONA; });
   lista.forEach(function(x){ x.ev.sort(function(a,b){ return peso(a)-peso(b) || cmpSess(a._ss[0],b._ss[0]); }); x.prox=x.ev.map(function(e){ return e._ss[0]; }).filter(function(s){ return horaConhecida(s) && !semHora(s); }).sort(cmpSess)[0]; });
   lista.sort(function(a,b){ return (FAV.has(b.p.id)-FAV.has(a.p.id)) || b.ev.length-a.ev.length || a.p.nome.localeCompare(b.p.nome,"pt"); });
@@ -1481,7 +1546,7 @@ function renderVoce(){
     else { qq.sort(function(a,b){ return cmpSess(a._ss[0],b._ss[0]); }); html+='<div class="heroi"><span class="num">'+qq.length+'</span><span class="rot">quero ver</span></div><div class="grade">'+qq.map(function(e){ return cartaz(e); }).join("")+'</div>'; }
   } else {
     var sum=agendaSumida();
-    if (sum.length) html+='<div class="aviso-ag" role="note">'+ICO.alerta+'<span>'+(sum.length===1?"1 sessão salva saiu da programação":sum.length+" sessões salvas saíram da programação")+': '+esc(sum.map(nomeDaSumida).join("; "))+'. Confira na página do evento.</span><button type="button" id="ag-sumidas">tirar</button></div>';
+    if (sum.length) html+='<div class="aviso-ag" role="note">'+ICO.alerta+'<span>'+pl(sum.length,"sessão salva saiu","sessões salvas saíram")+" da programação"+': '+esc(sum.map(nomeDaSumida).join("; "))+'. Confira na página do evento.</span><button type="button" id="ag-sumidas">tirar</button></div>';
     if (!ss.length) html+='<div class="vazio"><b>Agenda vazia</b>Na Programação, toque no + de uma sessão; ou abra um evento e escolha a sessão.</div>';
     else {
       var cf=conflitos(ss), dia=null;
@@ -1570,10 +1635,11 @@ function alternarFav(id){ FAV.has(id)?FAV.delete(id):FAV.add(id); persistir(); r
 /* ---------- filtros (gaveta) ---------- */
 function pintarFiltros(){
   var fx=faixaVista();
-  var porG={}; EV.forEach(function(e){ if (passa(e,{grupo:1}) && sessNaJanela(e,fx).length) porG[e._grupo]=(porG[e._grupo]||0)+1; });
-  /* G1: gênero sem nada no recorte some da gaveta (a não ser que esteja marcado) */
-  $("#f-grupos").innerHTML=GRUPOS.filter(function(g){ return porG[g.id] || F.grupos.has(g.id); }).map(function(g){ var n=porG[g.id]||0, on=F.grupos.has(g.id);
-    return '<button type="button" data-g="'+esc(g.id)+'" aria-pressed="'+on+'" '+attrCor(g.id)+'>'+esc(g.rotulo)+'<i>'+n+'</i></button>'; }).join("");
+  var cg=contarGrupos(fx), porG=cg.n;
+  /* G1: gênero sem nada no recorte some da gaveta (a não ser que esteja marcado); R2: exposições e cinema contam
+     como no muro e, sem filtro, levam à aba deles (como o cartaz do muro) */
+  $("#f-grupos").innerHTML=GRUPOS.filter(function(g){ return porG[g.id] || F.grupos.has(g.id); }).map(function(g){ var n=porG[g.id]||0, on=F.grupos.has(g.id), pv=cg.portal[g.id];
+    return '<button type="button" data-g="'+esc(g.id)+'"'+(pv?' data-portal="'+pv+'" aria-label="'+esc(g.rotulo)+': '+(g.id==="cinema"?pl(n,"filme","filmes"):pl(n,"exposição","exposições"))+', abre a aba"':' aria-pressed="'+on+'"')+' '+attrCor(g.id)+'>'+esc(g.rotulo)+'<i>'+n+'</i></button>'; }).join("");
   function conta(dim, teste, porSessao){
     var o={}; o[dim]=1;
     return EV.filter(function(e){ if (!passa(e,o)) return false; var ss=sessNaJanela(e,fx,o); return porSessao ? ss.some(teste) : (ss.length && teste(e)); }).length;
@@ -1590,7 +1656,7 @@ function pintarFiltros(){
     return {v:c, r:CIRC_ROT[c], on:F.circ.has(c), n:conta("circ", function(e){ return e._palco._circ===c; })}; }).filter(function(x){ return x.n || x.on; }));
   $("#f-palco").value=F.palco; $("#f-bairro").value=F.bairro; $("#f-gratis").checked=F.gratis;
   var n=EV.filter(function(e){ return passa(e) && sessNaJanela(e,fx).length; }).length;
-  $("#f-ver").textContent="Ver "+n+(n===1?" evento":" eventos");
+  $("#f-ver").textContent="Ver "+pl(n,"evento","eventos");
 }
 function abrirFiltros(){ pintarFiltros(); var d=$("#filtros"); if (!d.open) empurrarCamada("filtros"); if (d.showModal) d.showModal(); else d.setAttribute("open",""); }
 function fecharFiltros(){ renderPendente(); var d=$("#filtros"); if (d.open){ if(d.close) d.close(); else d.removeAttribute("open"); } }
@@ -1629,9 +1695,9 @@ function contarAbas(){ var n=sessoesAgenda().length+agendaSumida().length+QUERO.
 /* G1: saúde de TODAS as fontes (guia, teatro, exposições, cinema); "suspeita" (ok mas vazia há dias) em âmbar, falha em vermelho */
 function estadoFonte(f){ f=f||{}; return f.status==="suspeita" ? "susp" : (f.ok===false || f.status==="falha") ? "mal" : "ok"; }
 function numerosFonte(f){
-  if (f.exposicoes!=null) return f.exposicoes+(f.exposicoes===1?" exposição":" exposições");
-  if (f.cinemas!=null) return f.cinemas+(f.cinemas===1?" sala, ":" salas, ")+(f.sessoes||0)+" sessões";
-  return (f.eventos||0)+" eventos, "+(f.sessoes||0)+" sessões";
+  if (f.exposicoes!=null) return pl(f.exposicoes,"exposição","exposições");
+  if (f.cinemas!=null) return pl(f.cinemas,"sala","salas")+", "+pl(f.sessoes,"sessão","sessões");
+  return pl(f.eventos,"evento","eventos")+", "+pl(f.sessoes,"sessão","sessões");
 }
 function gruposDeFontes(){
   var cin=null;
@@ -1651,7 +1717,7 @@ function rodape(){
     ks.forEach(function(k){ var f=gr[1][k]||{}, st=estadoFonte(f); tot++; if (st==="ok") ok++; else if (st==="susp") susp++; else mal++;
       html+='<li'+(st==="susp"?' class="susp"':"")+'><span class="ponto'+(st==="ok"?"":" "+st)+'"></span><b>'+esc(k)+'</b> · '+(st==="ok"?esc(numerosFonte(f)):st==="susp"?"suspeita: "+esc(f.erro||"vazia há dias"):esc(f.erro||"falhou"))+'</li>'; });
   });
-  $("#r-fontes").innerHTML='<span class="ponto'+(mal?" mal":susp?" susp":"")+'"></span>'+ok+" de "+tot+" fontes ok"+(susp?" · "+susp+(susp===1?" suspeita":" suspeitas"):"");
+  $("#r-fontes").innerHTML='<span class="ponto'+(mal?" mal":susp?" susp":"")+'"></span>'+ok+" de "+pl(tot,"fonte ok","fontes ok")+(susp?" · "+pl(susp,"suspeita","suspeitas"):"");
   $("#saude").innerHTML=html;
 }
 function irVista(v){ if (v!==VISTA){ try{ history.pushState({aba:v}, "", urlDe(v)); }catch(e){} } VISTA=v; LIMITE=48; ALIM=48; render(); window.scrollTo(0,0); }
@@ -1668,7 +1734,8 @@ function ligar(){
   $("#b-filtros").addEventListener("click", abrirFiltros);
   $("#f-fechar").addEventListener("click", fecharFiltros);
   $("#filtros").addEventListener("click", function(ev){ if (ev.target===this) fecharFiltros(); });
-  $("#f-grupos").addEventListener("click", function(ev){ var b=ev.target.closest("button"); if(!b||b.disabled) return; var g=b.dataset.g; F.grupos.has(g)?F.grupos.delete(g):F.grupos.add(g); LIMITE=48; pintarFiltros(); agendarRender(); });
+  $("#f-grupos").addEventListener("click", function(ev){ var b=ev.target.closest("button"); if(!b||b.disabled) return; var g=b.dataset.g;
+    if (b.dataset.portal){ var pv=b.dataset.portal; fecharFiltros(); irVista(pv); return; } F.grupos.has(g)?F.grupos.delete(g):F.grupos.add(g); LIMITE=48; pintarFiltros(); agendarRender(); });
   $("#f-palco").addEventListener("change", function(){ F.palco=this.value; pintarFiltros(); agendarRender(); });
   $("#f-bairro").addEventListener("change", function(){ F.bairro=this.value; pintarFiltros(); agendarRender(); });
   $("#f-gratis").addEventListener("change", function(){ F.gratis=this.checked; if (F.gratis) F.precoMax=0; pintarFiltros(); agendarRender(); });
